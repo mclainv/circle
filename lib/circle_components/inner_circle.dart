@@ -1,6 +1,7 @@
 import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'dart:math';
 
 class InnerCircle extends StatelessWidget {
   InnerCircle({this.auth});
@@ -10,13 +11,24 @@ class InnerCircle extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: DraggableCircle(
-        child: new Image.asset(
-          'assets/circle.jpg',
-          height: 128,
-          width: 128,
-        ),
+        child:
+        CircleGraphWidget(context),
       ),
     );
+  }
+}
+
+Widget CircleGraphWidget(BuildContext context) {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double radius = 1000.0;
+    final Paint paint = new Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = 1.0
+      ..color = Colors.blue[500]
+      ..style = PaintingStyle.stroke;
+    return canvas.drawArc(new Rect.fromLTWH(0.0, 0.0, size.width/2, size.height/2),
+        0.175, 0.349, false, paint);
   }
 }
 

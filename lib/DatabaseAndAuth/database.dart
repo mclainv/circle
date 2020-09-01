@@ -49,14 +49,6 @@ class DatabaseService {
     }
   }
 
-  Future getFriendRequests(String username) async {
-    return friendRequestsCollection.where("username", isEqualTo: username)
-        .snapshots()
-        .listen(
-            (data) => print('grower ${data.documents[0]['uid']}')
-    );
-  }
-
   Future updateBasicUserData(String username, Map friends, Map circles,
       double balance) async {
     return await usersCollection.document(uid).setData({
@@ -83,6 +75,16 @@ class DatabaseService {
   getUserDocuments() async {
     return await Firestore.instance.collection('users').getDocuments();
   }
+  getFriendRequestDocuments() async {
+    return await Firestore.instance.collection('friendRequests').getDocuments();
+  }
+//  Future getFriendRequests(String username) async {
+//    return friendRequestsCollection.where("username", isEqualTo: username)
+//        .snapshots()
+//        .listen(
+//            (data) => print('grower ${data.documents[0]['uid']}')
+//    );
+//  }
 
   Future findUsername() async {
     getUserDocuments().then((val) {
@@ -96,6 +98,28 @@ class DatabaseService {
             return (val.documents[i].data["username"]);
           }
         }
+      }
+      else {
+        print("Not Found");
+        return null;
+      }
+    });
+  }
+  Future findFriendRequests() async {
+    List allFriendRequests;
+    getFriendRequestDocuments().then((val) {
+
+      //Ensure documents exist
+      if (val.documents.length > 0) {
+        //Run through all documents
+        for(int i = 0; i < val.documents.length; i++) {
+          //If the current user ID equals the real user ID,
+          if(val.documents[i].to == 'testFriend') {
+            //return this username
+            allFriendRequests += (val.documents[i].data["from"]);
+          }
+        }
+        return allFriendRequests;
       }
       else {
         print("Not Found");

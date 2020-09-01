@@ -10,7 +10,7 @@ class SetUsernamePage extends StatefulWidget {
   SetUsernamePage({this.auth, this.loginCallback, this.user});
   final User user;
   final BaseAuth auth;
-  final VoidCallback loginCallback;z
+  final VoidCallback loginCallback;
   Color c = const Color(0xFF42A5F5);
   @override
   State<StatefulWidget> createState() => new _SetUsernamePageState();

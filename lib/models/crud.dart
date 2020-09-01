@@ -7,10 +7,13 @@ class CrudMethods {
   final String userId;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+
   getFriends(String uid) async {
     return await Firestore.instance.collection('users').document(uid).collection('friends').getDocuments();
   }
   getFriendRequests(String uid) async {
-    return await Firestore.instance.collection('users').document(uid).collection('friendRequestsIncoming').getDocuments();
+    print("here");
+    DatabaseService DBS = new DatabaseService(uid: uid);
+    return await DBS.findFriendRequests();
   }
 }

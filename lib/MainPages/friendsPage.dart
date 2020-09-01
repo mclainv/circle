@@ -163,7 +163,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('User Queried Bruh...', style: TextStyle(fontSize: 15.0)),
+            title: Text('User Queried...', style: TextStyle(fontSize: 15.0)),
             content: Text(_errorMessage),
             actions: <Widget>[
               FlatButton(
@@ -288,8 +288,9 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                   padding: const EdgeInsets.all(8.0),
                   child: Text("Incoming Friend Requests"),
                 )
-        ],
-        )
+        ]
+        ),
+              _friendRequestsList(),
         ]
         )
         )
@@ -309,8 +310,8 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
               }
               return Column(
                 children: <Widget>[
-                  Text(snapshot.data.document[0]['from']),
-                  Text(snapshot.data.document[0]['to']),
+                  Text(snapshot.data.documents[0]['from']),
+                  Text(snapshot.data.documents[0]['to']),
                 ]
               );
             })
