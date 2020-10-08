@@ -1,12 +1,12 @@
 class User {
-  final String uid;
+  final String id;
   final String username;
   final String email;
 
-  User({this.uid, this.username, this.email});
+  User({this.id, this.username, this.email});
 
-  getUID() {
-    return this.uid;
+  getID() {
+    return this.id;
   }
 
   getUsername() {
@@ -17,13 +17,13 @@ class User {
   }
 
   User.fromData(Map<String, dynamic> data)
-      : uid = data['uid'],
+      : id = data['uid'],
         username = data['username'],
         email = data['email'];
 
   Map<String, dynamic> toJson() {
     return {
-      'uid': uid,
+      'uid': id,
       'username': username,
       'email' : email,
     };

@@ -27,10 +27,10 @@ class _SetUsernamePageState extends State<SetUsernamePage> {
   User user;
   String username;
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? User(id: user.uid) : null;
   }
   User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(uid: user.uid, username: username) : null;
+    return user != null ? User(id: user.uid, username: username) : null;
   }
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -56,7 +56,7 @@ class _SetUsernamePageState extends State<SetUsernamePage> {
         });
         if (amountOfNames == 0) {
           FirebaseUser fbUser = await widget.auth.getCurrentUser();
-          await DatabaseService().addUsername(_username, widget.user.getUID());
+          await DatabaseService().addUsername(_username, widget.user.getID());
             // ignore: unnecessary_statements
             Navigator.of(context).push(
               MaterialPageRoute(

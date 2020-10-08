@@ -10,7 +10,7 @@ class LoginSignupPage extends StatefulWidget {
 
   final BaseAuth auth;
   final VoidCallback loginCallback;
-  Color c = const Color(0xFF42A5F5);
+  final Color c = const Color(0xFF42A5F5);
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
 }
@@ -43,21 +43,20 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       _isLoading = true;
     });
     if (validateAndSave()) {
-      User user;
       try {
         if (_isLoginForm) {
-          user = await widget.auth.signIn(_email, _password);
-          print('Signed in: ${user.getUID()}, ${user.getUsername()}');
+          User user = await widget.auth.signIn(_email, _password);
+          print('Signed in: ${user.getID()}, ${user.getUsername()}');
         } else {
-          user = await widget.auth.signUp(_email, _password, _username);
+          User user = await widget.auth.signUpWithEmail(_email, _password, _username);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
-          print('Signed up user: ${user.getUID()}');
+          print('Signed up user: ${user.getID()}');
         }
         setState(() {
           _isLoading = false;
         });
-        if (user.getUID().length > 0 && user.getUID() != null && _isLoginForm) {
+        if (widget.auth.isUserLoggedIn == true && _isLoginForm) {
           widget.loginCallback();
         }
       } catch (e) {

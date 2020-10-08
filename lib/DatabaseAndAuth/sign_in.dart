@@ -7,7 +7,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 User _userFromFirebaseUser(FirebaseUser user) {
-  return user != null ? User(uid: user.uid) : null;
+  return user != null ? User(id: user.uid) : null;
 }
 Future<User> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -33,7 +33,7 @@ Future<User> signInWithGoogle() async {
 
   assert(user.uid == currentUser.uid);
 
-  await DatabaseService(uid: _userFromFirebaseUser(user).uid).updateBasicUserData("unnamed", Map(), Map(), 0);
+  await DatabaseService(uid: _userFromFirebaseUser(user).id).updateBasicUserData("unnamed", Map(), Map(), 0);
 
   return _userFromFirebaseUser(user);
 }

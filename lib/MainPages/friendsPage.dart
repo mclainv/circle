@@ -50,7 +50,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
   String _userId = "";
   User thisUser;
   User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(uid: user.uid, username: username) : null;
+    return user != null ? User(id: user.uid, username: username) : null;
   }
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
   }
 
   Future<bool> sendFriendRequest(BuildContext context) async {
-    DatabaseService  DBS = new DatabaseService(uid: widget.thisUser.getUID());
+    DatabaseService  DBS = new DatabaseService(uid: widget.thisUser.getID());
     return showDialog(
         //syncs context
         context: myGlobals.scaffoldKey.currentContext,

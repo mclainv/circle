@@ -22,7 +22,6 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = "";
   User realUser;
   @override
   void initState() {
@@ -31,7 +30,6 @@ class _RootPageState extends State<RootPage> {
       setState(() {
         if (user != null) {
           realUser = _userFromFirebaseUsername(user, "test");
-          _userId = user?.uid;
         }
         authStatus =
         user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
@@ -39,13 +37,12 @@ class _RootPageState extends State<RootPage> {
     });
   }
   User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(uid: user.uid, username: username) : null;
+    return user != null ? User(id: user.uid, username: username) : null;
   }
   void loginCallback() {
     widget.auth.getCurrentUser().then((user) {
       setState(() {
         realUser = _userFromFirebaseUsername(user, "test");
-        _userId = user.uid.toString();
       });
     });
     setState(() {
@@ -56,7 +53,6 @@ class _RootPageState extends State<RootPage> {
   void logoutCallback() {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
-      _userId = "";
     });
   }
 
@@ -82,25 +78,13 @@ class _RootPageState extends State<RootPage> {
         );
         break;
       case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) {
-          if(DatabaseService(uid: _userId).findUsername == null) {
-            return new SetUsernamePage(
-              auth: widget.auth,
-              loginCallback: loginCallback,
-              user: realUser,
-              //logoutCallback: logoutCallback,
-            );
-          }
-          else if(DatabaseService(uid: _userId).findUsername != null) {
+          {
             return new Dashboard(
               auth: widget.auth,
               thisUser: realUser,
               //logoutCallback: logoutCallback,
             );
-
           }
-        } else
-          return buildWaitingScreen();
         break;
       default:
         return buildWaitingScreen();

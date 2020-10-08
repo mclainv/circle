@@ -11,7 +11,7 @@ class DatabaseService {
 
   //Collection reference
   final CollectionReference _usersCollectionReference = Firestore.instance.collection(
-      'users');
+      "users");
   final CollectionReference usernamesCollection = Firestore.instance.collection(
       'usernames');
   final CollectionReference friendsCollection = Firestore.instance.collection(
@@ -60,8 +60,16 @@ class DatabaseService {
   }
   Future createUser(User user) async {
     try {
-      await _usersCollectionReference.document(user.uid).setData(user.toJson());
+      await _usersCollectionReference.document(user.id).setData(user.toJson());
       } catch (e) {
+      return e.message;
+    }
+  }
+  Future getUser(String uid) async {
+    try {
+      var userData = await _usersCollectionReference.document(uid).get();
+      return User.fromData(userData.data);
+    } catch (e) {
       return e.message;
     }
   }
