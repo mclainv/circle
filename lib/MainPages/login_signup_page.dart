@@ -84,10 +84,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   void resetForm() {
     _formKey.currentState.reset();
     _errorMessage = "";
+    _isLoading = false;
   }
 
   void toggleFormMode() {
     resetForm();
+    _isLoading = false;
     setState(() {
       _isLoginForm = !_isLoginForm;
     });
@@ -95,30 +97,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              // Where the linear gradient begins and ends
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0, 0.7],
-              colors: [
-                Color.fromRGBO(0, 0, 0, 1),
-                Color.fromRGBO(53,92,125,1),
-//                Colors.indigo[600],
-//                Colors.indigo[400],
-              ],
-            ),
-          ),
-          child: Stack(
-            children: <Widget>[
-              _showForm(),
-              _showCircularProgress(),
-            ],
-          ),
-        ));
+    return MaterialApp(
+      home: Stack(
+      children: <Widget>[
+        _showForm(),
+        _showCircularProgress(),
+        ],
+      ),
+    );
   }
+
+
+
 
   Widget _showCircularProgress() {
     if (_isLoading) {
@@ -154,29 +144,47 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 //  }
 
   Widget _showForm() {
-    return new Container(
-        padding: EdgeInsets.all(16.0),
-        child: new Form(
-          key: _formKey,
-          child: new ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              showLogo(),
-              showUsernameInput(),
-              showEmailInput(),
-              showPasswordInput(),
-              showErrorMessage(),
-              showPrimaryButton(),
-              showSecondaryButton(),
-              SizedBox(height: 20),
-              _signInButton(),
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.2, 0.9],
+            colors: [
+              const Color(0xfff4acb7),
+              const Color(0xffd8e2dc),
             ],
           ),
-        ));
+        ),
+        child:
+       new Scaffold(
+       backgroundColor: Colors.transparent,
+         body: new Container(
+            padding: EdgeInsets.all(16.0),
+            child: new Form(
+              key: _formKey,
+              child: new ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  showLogo(),
+                  showUsernameInput(),
+                  showEmailInput(),
+                  showPasswordInput(),
+                  showErrorMessage(),
+                  showPrimaryButton(),
+                  showSecondaryButton(),
+                  SizedBox(height: 20),
+                  _signInButton(),
+                ],
+              ),
+          )
+         )
+         )
+      );
   }
 
   Widget showErrorMessage() {
-
+    _isLoading = false;
     if (_errorMessage.length > 0 && _errorMessage != null) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -300,7 +308,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+        //validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+        validator: (value) {
+          if(value.isEmpty)
+            return 'Password can\'t be empty';
+          else if(value.toString().length < 6)
+            return 'Password must be at least six characters';
+
+          return null;
+        },
         onSaved: (value) => _password = value.trim(),
       ),
     );
@@ -323,7 +339,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
+            color: Color(0xff627264),
             child: new Text(_isLoginForm ? 'Login' : 'Create account',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: validateAndSubmit,
@@ -377,4 +393,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         );
   }
 }
-
+//class LoginPageWidget extends StatefulWidget {
+//  LoginPageWidget({Key key}) : super(key: key);
+//
+//  @override
+//  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+//}
+//class _LoginPageWidgetState extends State<LoginPageWidget> {
+//  Widget build(BuildContext buildContext) {
+//
+//  }
+//}

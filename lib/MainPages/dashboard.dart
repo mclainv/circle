@@ -28,7 +28,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
   Animation<double> menuScaleAnimation;
   Animation<Offset> _slideAnimation;
   String _userId = "";
-  String _username = "Test";
+  String _username = "";
 
   @override
   void initState() {

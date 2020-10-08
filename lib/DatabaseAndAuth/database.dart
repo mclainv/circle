@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'package:circle_app_alpha/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   //Collection reference
-  final CollectionReference usersCollection = Firestore.instance.collection(
+  final CollectionReference _usersCollectionReference = Firestore.instance.collection(
       'users');
   final CollectionReference usernamesCollection = Firestore.instance.collection(
       'usernames');
@@ -51,12 +51,19 @@ class DatabaseService {
 
   Future updateBasicUserData(String username, Map friends, Map circles,
       double balance) async {
-    return await usersCollection.document(uid).setData({
+    return await _usersCollectionReference.document(uid).setData({
       'username': username,
       'friends': friends,
       'circles': circles,
       'balance': balance,
     });
+  }
+  Future createUser(User user) async {
+    try {
+      await _usersCollectionReference.document(user.uid).setData(user.toJson());
+      } catch (e) {
+      return e.message;
+    }
   }
 
   Future addUsername(String username, String uid) async {
@@ -78,13 +85,13 @@ class DatabaseService {
   getFriendRequestDocuments() async {
     return await Firestore.instance.collection('friendRequests').getDocuments();
   }
-//  Future getFriendRequests(String username) async {
-//    return friendRequestsCollection.where("username", isEqualTo: username)
-//        .snapshots()
-//        .listen(
-//            (data) => print('grower ${data.documents[0]['uid']}')
-//    );
-//  }
+  Future getFriendRequests(String username) async {
+    return friendRequestsCollection.where("username", isEqualTo: username)
+        .snapshots()
+        .listen(
+            (data) => print('grower ${data.documents[0]['uid']}')
+    );
+  }
 
   Future findUsername() async {
     getUserDocuments().then((val) {
@@ -113,8 +120,8 @@ class DatabaseService {
       if (val.documents.length > 0) {
         //Run through all documents
         for(int i = 0; i < val.documents.length; i++) {
-          //If the current user ID equals the real user ID,
-          if(val.documents[i].to == 'testFriend') {
+          //If the current user ID equals the real user ID, TODO: DOESN'T WORK
+          if(val.documents[i].data() == 'testFriend') {
             //return this username
             allFriendRequests += (val.documents[i].data["from"]);
           }

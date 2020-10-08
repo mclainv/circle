@@ -15,16 +15,17 @@ abstract class BaseAuth {
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
-
 }
 
 class Auth implements BaseAuth {
-  static bool _usernameTakenS;
+  static bool _usernameTaken;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Stream<User> get user {
     return _firebaseAuth.onAuthStateChanged.map
       (_userFromFirebaseUser);
   }
+  DatabaseService _databaseService;
+
   //create user obj based on Firebase User
   User _userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -35,7 +36,7 @@ class Auth implements BaseAuth {
   }
   //returns whether or not the username is taken (the boolean value)
   bool getUserTaken() {
-    return _usernameTakenS;
+    return _usernameTaken;
   }
   //Signs in the user with their email and password, returns a custom User object based on firebase's return
   Future<User> signIn(String email, String password) async {
@@ -54,21 +55,25 @@ class Auth implements BaseAuth {
     //check if the username is taken
     var usernameCheck = await DatabaseService().checkUsername(username);
     if(usernameCheck == 0) {
-      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      //creates result object of type AuthResult. Waits to receive firebaseAuth request before setting user and returning the uid.
-      FirebaseUser user = result.user;
-      //Creates a username document corresponding to the correct user data
-      await DatabaseService(uid: _userFromFirebaseUser(user).uid).addUsername(username, _userFromFirebaseUser(user).uid);
-      //Creates a user document with blank fields
-      await DatabaseService(uid: _userFromFirebaseUser(user).uid)
-          .updateBasicUserData(username, new Map(), new Map(), 0.00);
-      //Returns the user object and the username
-      return _userFromFirebaseUsername(user, username);
+      try {
+        AuthResult result = await
+        _firebaseAuth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        //creates a custom user file
+        await _databaseService.createUser(User(
+            uid: result.user.uid,
+            username: username,
+            email: email));
+        //creates result object of type AuthResult. Waits to receive firebaseAuth request before setting user and returning the uid.
+        FirebaseUser user = result.user;
+        //Returns the user object and the username
+        return _userFromFirebaseUsername(user, username);
+      }
+      catch(e) { print(e); }
     }
     else {
       // "Username taken. Please choose another.";
-      _usernameTakenS = true;
+      _usernameTaken = true;
       throw new Exception('This username is already in use.');
     }
   }

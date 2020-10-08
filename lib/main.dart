@@ -5,6 +5,7 @@ import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([

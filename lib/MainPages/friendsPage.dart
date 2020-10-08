@@ -71,6 +71,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
       );
       crudObj.getFriendRequests(_userId).then((results) {
         setState(() {
+          print(_userId);
           friendRequests = results;
         });
       }
@@ -246,7 +247,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                   IconButton(
                     icon: Icon(Icons.mail_outline),
                     onPressed: () {
-                      _getFriendsRequestList(ctxt);
+                      _getFriendRequestList(ctxt);
                     },),
                 ],),
                   body: _friendsList())
@@ -273,23 +274,31 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
       return Text('Loading, Please wait..');
     }
   }
-  void _getFriendsRequestList(ctxt) {
-    if(friendRequests != null) {
+  void _getFriendRequestList(ctxt) {
+    //ensure friendRequests has data, i.e. check if the user has at least one friend request.
+  // if(friendRequests != null) {
+      //prevents the user from interacting with the rest of the app
       showModalBottomSheet(context: ctxt, builder: (BuildContext bc) {
+        //returns a container widget
       return Container(
+        //sets the height according to a mediaquery
         height: MediaQuery.of(ctxt).size.height * 0.60,
+        //adds a padding object
         child: Padding(
+          //sets the padding
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
               Row(
               children: <Widget>[
                 Padding(
+                  //first object in column
                   padding: const EdgeInsets.all(8.0),
                   child: Text("Incoming Friend Requests"),
                 )
         ]
         ),
+              //second object in column
               _friendRequestsList(),
         ]
         )
@@ -298,29 +307,48 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
       }
       );
     }
+ // }
+  Widget _buildList(BuildContext context, DocumentSnapshot document) {
+    return ListTile(
+      title: Text(document['from']),
+      subtitle: Text(document['to']),
+    );
   }
   Widget _friendRequestsList() {
-    if (friendRequests != null) {
+      //return a card
       return new Card (
-        child: new StreamBuilder(
+        //create a stream builder object
+        child: new StreamBuilder<QuerySnapshot>(
             stream: Firestore.instance.collection('friendRequests').snapshots(),
             builder: (context, snapshot) {
+              print(snapshot);
               if(!snapshot.hasData) {
                 return Text("Loading... one minute", );
               }
-              return Column(
-                children: <Widget>[
-                  Text(snapshot.data.documents[0]['from']),
-                  Text(snapshot.data.documents[0]['to']),
-                ]
-              );
+                  return new Row(
+                        children: <Widget> [ Expanded(
+
+                              child: SizedBox(
+                                height: 350,
+                                child:
+                                  ListView.builder(itemCount: 10, itemBuilder: (context, index) {
+                                    return _buildList(context,
+                                        (snapshot.data.documents[index])
+                                      );
+                                    }
+                                  )
+                              )
+                        )]
+                  );
             })
       );
+
   }
-  else {
-    return Text('Loading, Please wait..');
-    }
-  }
+        //useless??
+//  getFriendRequests(AsyncSnapshot<QuerySnapshot> snapshot) {
+//    return snapshot.data.documents
+//        .map((doc) => new ListTile(title: new Text(doc["to"]), subtitle: new Text(doc["from"].toString())));
+//  }
 
   Widget menu(ctxt) {
     return SlideTransition(
