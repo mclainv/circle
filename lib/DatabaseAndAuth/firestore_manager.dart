@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AddDataToFireStore extends StatelessWidget {
   TextEditingController _controller = TextEditingController();
   final db = Firestore.instance;
-
+//Reference, but don't use... not consistent with general database approach so far.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
