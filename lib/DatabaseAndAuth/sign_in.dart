@@ -33,8 +33,6 @@ Future<User> signInWithGoogle() async {
 
   assert(user.uid == currentUser.uid);
 
-  await DatabaseService(uid: _userFromFirebaseUser(user).id).updateBasicUserData("unnamed", Map(), Map(), 0);
-
   return _userFromFirebaseUser(user);
 }
 

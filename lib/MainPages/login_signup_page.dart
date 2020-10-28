@@ -56,14 +56,16 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         setState(() {
           _isLoading = false;
         });
-        if (widget.auth.isUserLoggedIn == true && _isLoginForm) {
+        if (widget.auth.getCurrentUser() != null && _isLoginForm) {
           widget.loginCallback();
         }
       } catch (e) {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          _errorMessage = e.message;
+          if(e.message != null) {
+            _errorMessage = e.message;
+          }
           if(Auth().getUserTaken())
             _errorMessage = "That username is already in use.";
           _formKey.currentState.reset();
@@ -352,54 +354,33 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       onPressed: () {
         signInWithGoogle().whenComplete(() {
           widget.loginCallback();
-//          Navigator.of(context).push(
-//            MaterialPageRoute(
-//              builder: (context) {
-//                return Dashboard(
-//                  auth: widget.auth,
-//                  thisUser: ,
-//                );
-//              },
-//            ),
-//          );
         });
       },
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40)),
-          highlightElevation: 0,
-          borderSide: BorderSide(color: Colors.grey),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                    image: AssetImage("assets/google_logo.png"), height: 35.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Sign in with Google',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(
+                image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
-//class LoginPageWidget extends StatefulWidget {
-//  LoginPageWidget({Key key}) : super(key: key);
-//
-//  @override
-//  _LoginPageWidgetState createState() => _LoginPageWidgetState();
-//}
-//class _LoginPageWidgetState extends State<LoginPageWidget> {
-//  Widget build(BuildContext buildContext) {
-//
-//  }
-//}

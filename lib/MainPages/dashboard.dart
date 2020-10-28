@@ -8,10 +8,9 @@ import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard({this.auth, this.thisUser, this.username});
+  Dashboard({this.auth, this.user});
   final BaseAuth auth;
-  final User thisUser;
-  final String username;
+  final User user;
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -28,22 +27,10 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
   Animation<double> menuScaleAnimation;
   Animation<Offset> _slideAnimation;
   String _userId = "";
-  String _username = "";
 
   @override
   void initState() {
     super.initState();
-    if(widget.auth.getCurrentUser() != null)
-    widget.auth.getCurrentUser().then((user) {
-      setState(() {
-        //Takes toString() of a .snapshots on the proper document
-        if (user != null) {
-          _userId = user?.uid;
-          DatabaseService(uid: _userId).findUsername();
-        }
-      });
-      }
-    );
     _controller = AnimationController(vsync: this, duration: duration);
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
     menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
@@ -168,7 +155,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
                       ),
                     SizedBox(width:250)],
                   ),
-                  InkWell(child: Text(widget.thisUser.getUsername(),
+                  InkWell(child: Text(widget.user.getUsername(),
                       style: TextStyle(color: Colors.white, fontSize: 20))),
                   SizedBox(height:100),
                   InkWell(child: Text("Dashboard",
@@ -199,7 +186,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
                       context,
                       MaterialPageRoute(builder: (context) => Friends(
                         auth: widget.auth,
-                        thisUser: widget.thisUser,
+                        user: widget.user,
                       )),
                     );
                 }),

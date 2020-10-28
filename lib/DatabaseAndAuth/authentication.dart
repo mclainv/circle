@@ -18,6 +18,9 @@ abstract class BaseAuth {
   Future<bool> isEmailVerified();
 
   Future<bool> isUserLoggedIn();
+
+  // ignore: non_constant_identifier_names
+  Future<User> populateCurrentUser(FirebaseUser user);
 }
 
 class Auth implements BaseAuth {
@@ -25,8 +28,8 @@ class Auth implements BaseAuth {
   User _currentUser;
 
   User get currentUser => _currentUser;
-
-  static bool _usernameTaken;
+  // ignore: non_constant_identifier_names
+  static bool _usernameTaken = false;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Stream<User> get user {
@@ -41,11 +44,6 @@ class Auth implements BaseAuth {
     return user != null ? User(id: user.uid) : null;
   }
 
-  //creates user obj based on Firebase User and a username
-  User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(id: user.uid, username: username) : null;
-  }
-
   //returns whether or not the username is taken (the boolean value)
   bool getUserTaken() {
     return _usernameTaken;
@@ -56,15 +54,14 @@ class Auth implements BaseAuth {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
-    String uidA = await user.uid;
-    print("$uidA");
-    String username = await DatabaseService(uid: uidA).findUsername();
-    return _userFromFirebaseUsername(user, username);
+    return DatabaseService.getUser(user.uid.toString());
   }
 
-  Future _populateCurrentUser(FirebaseUser user) async {
+  Future<User> populateCurrentUser(FirebaseUser user) async {
     if (user != null) {
-      _currentUser = await _databaseService.getUser(user.uid);
+      User customUser = await DatabaseService.getUser(user.uid);
+      print(customUser.getUsername());
+      return customUser;
     }
   }
 
@@ -109,7 +106,7 @@ class Auth implements BaseAuth {
         id: authResult.user.uid,
         email: email,
       );
-      await _databaseService.createUser(_currentUser);
+      await DatabaseService.createUser(_currentUser);
 
       return authResult.user != null;
     } catch (e) {
@@ -125,7 +122,7 @@ class Auth implements BaseAuth {
         email: email,
         password: password,
       );
-      await _populateCurrentUser(authResult.user); // Populate the user information
+      await populateCurrentUser(authResult.user); // Populate the user information
       return authResult.user != null;
     } catch (e) {
       return e.message;
@@ -133,8 +130,10 @@ class Auth implements BaseAuth {
   }
   Future<bool> isUserLoggedIn() async {
     var user = await _firebaseAuth.currentUser();
-    await _populateCurrentUser(user); // Populate the user information
-    return user != null;
+    await populateCurrentUser(user); // Populate the user information
+    if(user != null)
+    return true;
+        return false;
   }
 
   Future<FirebaseUser> getCurrentUser() async {

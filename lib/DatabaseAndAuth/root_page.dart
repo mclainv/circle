@@ -1,4 +1,3 @@
-import 'package:circle_app_alpha/MainPages/set_username_page.dart';
 import 'package:circle_app_alpha/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,27 +21,23 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  User realUser;
+  User user;
   @override
   void initState() {
     super.initState();
-    widget.auth.getCurrentUser().then((user) {
-      setState(() {
-        if (user != null) {
-          realUser = _userFromFirebaseUsername(user, "test");
-        }
-        authStatus =
-        user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+    widget.auth.getCurrentUser().then((firebaseUser) {
+      DatabaseService.getUser(firebaseUser.uid).then((customUser) {
+        setState(() {
+          authStatus =
+          user?.id == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+          });
+        });
       });
-    });
-  }
-  User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(id: user.uid, username: username) : null;
   }
   void loginCallback() {
-    widget.auth.getCurrentUser().then((user) {
+    widget.auth.getCurrentUser().then((firebaseuser) {
       setState(() {
-        realUser = _userFromFirebaseUsername(user, "test");
+
       });
     });
     setState(() {
@@ -81,7 +76,7 @@ class _RootPageState extends State<RootPage> {
           {
             return new Dashboard(
               auth: widget.auth,
-              thisUser: realUser,
+              user: user,
               //logoutCallback: logoutCallback,
             );
           }

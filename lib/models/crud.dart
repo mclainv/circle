@@ -12,8 +12,7 @@ class CrudMethods {
     return await Firestore.instance.collection('users').document(uid).collection('friends').getDocuments();
   }
   getFriendRequests(String uid) async {
-    print("here");
-    DatabaseService DBS = new DatabaseService(uid: uid);
-    return await DBS.findFriendRequests();
+    print("Fetching friend requests");
+    return await DatabaseService.findFriendRequests();
   }
 }

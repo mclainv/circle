@@ -26,12 +26,6 @@ class _SetUsernamePageState extends State<SetUsernamePage> {
   bool _isLoading;
   User user;
   String username;
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(id: user.uid) : null;
-  }
-  User _userFromFirebaseUsername(FirebaseUser user, String username) {
-    return user != null ? User(id: user.uid, username: username) : null;
-  }
   bool validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -47,7 +41,7 @@ class _SetUsernamePageState extends State<SetUsernamePage> {
     });
     if (validateAndSave()) {
       try {
-          amountOfNames = await DatabaseService().checkUsername(_username);
+          amountOfNames = await DatabaseService.checkUsername(_username);
           if (amountOfNames != 0) {
             throw Exception("That username is already in use.");
           }
@@ -56,14 +50,14 @@ class _SetUsernamePageState extends State<SetUsernamePage> {
         });
         if (amountOfNames == 0) {
           FirebaseUser fbUser = await widget.auth.getCurrentUser();
-          await DatabaseService().addUsername(_username, widget.user.getID());
+          await DatabaseService.addUsername(_username, widget.user.getID());
             // ignore: unnecessary_statements
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
                   return Dashboard(
                     auth: widget.auth,
-                    thisUser: _userFromFirebaseUsername(fbUser, _username),
+                    user: widget.user
                   );
                 },
               ),

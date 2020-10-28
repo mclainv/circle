@@ -17,9 +17,9 @@ class User {
   }
 
   User.fromData(Map<String, dynamic> data)
-      : id = data['uid'],
-        username = data['username'],
-        email = data['email'];
+    : id = data['uid'],
+      username = data['username'],
+      email = data['email'];
 
   Map<String, dynamic> toJson() {
     return {

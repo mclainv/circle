@@ -12,9 +12,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'dart:async';
 
 class Friends extends StatefulWidget {
-  Friends({this.auth, this.thisUser});
+  Friends({this.auth, this.user});
   final BaseAuth auth;
-  final User thisUser;
+  final User user;
   @override
   _FriendsState createState() => _FriendsState();
 
@@ -44,7 +44,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
   Animation<double> scaleAnimation;
   Animation<double> menuScaleAnimation;
   Animation<Offset> _slideAnimation;
-  DatabaseService  DBS;
+  DatabaseService  DB;
 
   //create user obj based on Firebase User
   String _userId = "";
@@ -92,7 +92,6 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
   }
 
   Future<bool> sendFriendRequest(BuildContext context) async {
-    DatabaseService  DBS = new DatabaseService(uid: widget.thisUser.getID());
     return showDialog(
         //syncs context
         context: myGlobals.scaffoldKey.currentContext,
@@ -142,7 +141,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                     //Await a response from the CRUD method
                       //signals dialog trigger to run
                     Navigator.of(context).pop();
-                    DBS.sendFriendRequest(widget.thisUser.getUsername(), otherUsername).then((result) {
+                    DatabaseService.sendFriendRequest(widget.user.getUsername(), otherUsername).then((result) {
                       dialogTrigger(context);
                       _errorMessage = "Friend Request sent to @$otherUsername";
                     }).catchError((e) {
@@ -376,7 +375,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                       ),
                       SizedBox(width:250)],
                   ),
-                  InkWell(child: Text(widget.thisUser.getUsername(),
+                  InkWell(child: Text(widget.user.getUsername(),
                       style: TextStyle(color: Colors.white, fontSize: 20)),
                       onTap: () {}
                       ),
@@ -388,8 +387,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                           MaterialPageRoute(builder: (context) =>
                               Dashboard(
                                 auth: widget.auth,
-                                thisUser: thisUser,
-                                username: thisUser.username
+                                user: widget.user,
                               )),
                         );
                       }),
