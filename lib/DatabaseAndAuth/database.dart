@@ -25,27 +25,6 @@ class DatabaseService {
     }
   }
 
-  static Future<void> sendFriendRequest(String myUsername,
-      String otherUsername) async {
-    if (isLoggedIn()) {
-      var usernameCheck = await checkUsername(otherUsername);
-      if (usernameCheck > 0) {
-        friendRequestsCollection.add({
-          'from': myUsername,
-          'to': otherUsername
-        }).catchError((e) {
-          print(e);
-        });
-      }
-      else {
-        print('This user does not exist.');
-        throw new Exception('This user does not exist.');
-      }
-    } else {
-      print('You need to be logged in.');
-      throw new Exception('You need to be logged in.');
-    }
-  }
   static Future createUser(User user) async {
     try {
       await Firestore.instance.collection("users")
@@ -58,13 +37,12 @@ class DatabaseService {
   }
   static Future<User> getUser(String uid) async {
     try {
-      var userData = await Firestore.instance.collection(
-          "users").document(uid).get();
-      print(User.fromData(userData.data).getUsername());
-      return User.fromData(userData.data);
+      var userData = await
+      Firestore.instance.collection("users").document(uid).get();
+        return User.fromData(userData.data);
     } catch (e) {
-      if(e.message != null)
-        return e.message;
+      if(e != null)
+        return e;
     }
   }
 
@@ -135,5 +113,26 @@ class DatabaseService {
         return null;
       }
     });
+  }
+  static Future<void> sendFriendRequest(String myUsername,
+      String otherUsername) async {
+    if (isLoggedIn()) {
+      var usernameCheck = await checkUsername(otherUsername);
+      if (usernameCheck > 0) {
+        friendRequestsCollection.add({
+          'from': myUsername,
+          'to': otherUsername
+        }).catchError((e) {
+          print(e);
+        });
+      }
+      else {
+        print('This user does not exist.');
+        throw new Exception('This user does not exist.');
+      }
+    } else {
+      print('You need to be logged in.');
+      throw new Exception('You need to be logged in.');
+    }
   }
 }

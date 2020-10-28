@@ -3,6 +3,7 @@ import 'package:circle_app_alpha/DatabaseAndAuth/database.dart';
 import 'package:circle_app_alpha/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class BaseAuth {
   Future<User> signIn(String email, String password);
@@ -32,16 +33,18 @@ class Auth implements BaseAuth {
   static bool _usernameTaken = false;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Stream<User> get user {
+  Stream<Future> get user {
     return _firebaseAuth.onAuthStateChanged.map
+    //needs to return a User from a firebase user
       (_userFromFirebaseUser);
   }
 
   DatabaseService _databaseService;
 
   //create user obj based on Firebase User
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(id: user.uid) : null;
+  Future<User> _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? DatabaseService.getUser(user.uid) : null;
+
   }
 
   //returns whether or not the username is taken (the boolean value)

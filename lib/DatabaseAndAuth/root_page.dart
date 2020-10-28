@@ -29,7 +29,7 @@ class _RootPageState extends State<RootPage> {
       DatabaseService.getUser(firebaseUser.uid).then((customUser) {
         setState(() {
           authStatus =
-          user?.id == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+          customUser?.id == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
           });
         });
       });

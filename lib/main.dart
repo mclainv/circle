@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'DatabaseAndAuth/root_page.dart';
 import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:circle_app_alpha/ViewModels'
 
 
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         theme: new ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: new RootPage(auth: new Auth()));
+        home: new StartUpView(),
+        //home: new RootPage(auth: new Auth()));
   }
 }
