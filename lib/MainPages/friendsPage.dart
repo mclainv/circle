@@ -1,10 +1,9 @@
 import 'package:circle_app_alpha/DatabaseAndAuth/database.dart';
 import 'package:circle_app_alpha/MainPages/dashboard.dart';
 import 'package:circle_app_alpha/circle_components/inner_circle.dart';
-import 'package:circle_app_alpha/models/crud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:circle_app_alpha/models/user.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
@@ -35,7 +34,6 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
   QuerySnapshot friendRequests;
   Color backgroundColor = Color.fromRGBO(72, 72, 74, 1.0);
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  CrudMethods crudObj = new CrudMethods();
   double balance = 0;
   bool isCollapsed = true;
   double screenWidth, screenHeight;
@@ -61,21 +59,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
           thisUser = _userFromFirebaseUsername(user, user.uid);
           _userId = user?.uid;
         }
-      }
-      );
-      crudObj.getFriends(_userId).then((results) {
-        setState(() {
-          friends = results;
-        });
-      }
-      );
-      crudObj.getFriendRequests(_userId).then((results) {
-        setState(() {
-          print(_userId);
-          friendRequests = results;
-        });
-      }
-      );
+      });
     });
     _controller = AnimationController(vsync: this, duration: duration);
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
@@ -236,13 +220,7 @@ class _FriendsState extends State<Friends> with SingleTickerProviderStateMixin {
                   ),
                   IconButton(
                     icon: Icon(Icons.refresh),
-                    onPressed: () {
-                      crudObj.getFriends(_userId).then((results) {
-                        setState(() {
-                          friends = results;
-                        });
-                      });
-                    },),
+                    onPressed: () {},),
                   IconButton(
                     icon: Icon(Icons.mail_outline),
                     onPressed: () {

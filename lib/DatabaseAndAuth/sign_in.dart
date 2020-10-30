@@ -1,5 +1,5 @@
 import 'package:circle_app_alpha/DatabaseAndAuth/database.dart';
-import 'package:circle_app_alpha/models/user.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

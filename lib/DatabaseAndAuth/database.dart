@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'package:circle_app_alpha/models/user.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

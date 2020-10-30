@@ -1,4 +1,4 @@
-import 'package:circle_app_alpha/models/user.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/MainPages/login_signup_page.dart';

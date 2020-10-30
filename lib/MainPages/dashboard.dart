@@ -1,7 +1,7 @@
 import 'package:circle_app_alpha/DatabaseAndAuth/database.dart';
 import 'package:circle_app_alpha/MainPages/friendsPage.dart';
 import 'package:circle_app_alpha/circle_components/inner_circle.dart';
-import 'package:circle_app_alpha/models/user.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:circle_app_alpha/DatabaseAndAuth/authentication.dart';
