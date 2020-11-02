@@ -11,4 +11,8 @@ class HomeViewModel extends BaseModel {
 
 
 
+
+  Future navigateToCreateCircle() async {
+    await _navigationService.navigateTo()
+  }
 }

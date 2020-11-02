@@ -1,3 +1,5 @@
+import 'package:circle_app_alpha/Models/circle.dart';
+import 'Views/create_circle_view.dart';
 import 'Views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
@@ -20,6 +22,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: HomeView(),
+      );
+    case CreateCircleViewRoute:
+      var postToEdit = settings.arguments as Circle;
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: CreateCircleView(
+          edittingPost: postToEdit,
+        ),
       );
     default:
       return MaterialPageRoute(
