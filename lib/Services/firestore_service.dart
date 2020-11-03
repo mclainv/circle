@@ -32,7 +32,7 @@ class FirestoreService {
       return e;
     }
   }
-  Future addPost(Circle circle) async {
+  Future createCircle(Circle circle) async {
     try {
       await _circlesCollectionReference.add(circle.toMap());
     } catch (e) {
@@ -45,13 +45,13 @@ class FirestoreService {
     }
   }
 
-  Future getPostsOnceOff() async {
+  Future getCirclesOnceOff() async {
     try {
       var postDocumentSnapshot = await _circlesCollectionReference.getDocuments();
       if (postDocumentSnapshot.documents.isNotEmpty) {
         return postDocumentSnapshot.documents
             .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
-            .where((mappedItem) => mappedItem.title != null)
+            .where((mappedItem) => mappedItem.name != null)
             .toList();
       }
     } catch (e) {
@@ -64,13 +64,13 @@ class FirestoreService {
     }
   }
 
-  Stream listenToPostsRealTime() {
+  Stream listenToCirclesRealTime() {
     // Register the handler for when the posts data changes
     _circlesCollectionReference.snapshots().listen((postsSnapshot) {
       if (postsSnapshot.documents.isNotEmpty) {
         var posts = postsSnapshot.documents
             .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
-            .where((mappedItem) => mappedItem.title != null)
+            .where((mappedItem) => mappedItem.name != null)
             .toList();
 
         // Add the posts onto the controller
@@ -84,11 +84,21 @@ class FirestoreService {
   Future deleteCircle(String documentId) async {
     await _circlesCollectionReference.document(documentId).delete();
   }
+  Future leaveCircle(Circle circle, User user) async {
+    Map removedMap = new Map.from(circle.toMap());
+    for(int i = 0; i < removedMap.length; i++) {
+      if(removedMap[i].contains(user.id)) {
+         removedMap[i] = null;
+      }
+    }
+    await _circlesCollectionReference.document(circle.documentId)
+        .updateData(removedMap);
+  }
 
   Future updateCircle(Circle circle) async {
     try {
       await _circlesCollectionReference
-          .document(circle.circleId)
+          .document(circle.documentId)
           .updateData(circle.toMap());
     } catch (e) {
       // TODO: Find or create a way to repeat error handling without so much repeated code

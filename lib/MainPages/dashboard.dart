@@ -16,17 +16,13 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMixin {
-  Color backgroundColor = Color.fromRGBO(72, 72, 74, 1.0);
-  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  double balance = 0;
-  bool isCollapsed = true;
   double screenWidth, screenHeight;
+  bool isCollapsed = true;
   final Duration duration = const Duration(milliseconds: 300);
   AnimationController _controller;
   Animation<double> scaleAnimation;
   Animation<double> menuScaleAnimation;
   Animation<Offset> _slideAnimation;
-  String _userId = "";
 
   @override
   void initState() {
@@ -50,7 +46,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
     screenWidth = size.width;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           menu(context),
@@ -73,7 +69,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
           animationDuration: duration,
           borderRadius: BorderRadius.all(Radius.circular(40)),
           elevation: 8,
-          color: backgroundColor,
+          color: Colors.white,
           child: Container(
             padding: const EdgeInsets.only(left:16, right: 16, top: 48),
             child: Column(
@@ -104,7 +100,6 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
                     pageSnapping: true,
                     children: <Widget>[
                       Container(
-                        child: balanceDisplay(ctxt),
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         color: Colors.redAccent,
                         width: 100,
@@ -181,46 +176,19 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
                   SizedBox(height: 20),
                   InkWell(child: Text("Friends",
                   style: TextStyle(color: Colors.white, fontSize: 20)),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Friends(
-                        auth: widget.auth,
-                        user: widget.user,
-                      )),
-                    );
-                }),
+                  onTap: () {}),
                   SizedBox(height: 20),
                   Text("Settings",
                       style: TextStyle(color: Colors.white, fontSize: 20)),
                   SizedBox(height: 20),
                   InkWell(child: Text("Sign Out",
                       style: TextStyle(color: Colors.white, fontSize: 20)),
-                      onTap: () {
-                        _firebaseAuth.signOut();
-                        Navigator.of(ctxt).pushNamedAndRemoveUntil(
-                            '/', (Route<dynamic> route) => false);
-                      })
+                      onTap: () {})
                 ],
               ),
             )
         ),
       ),
     );
-  }
-  Widget balanceDisplay(ctxt) {
-       return Padding(
-         padding: const EdgeInsets.all(8.0),
-         child: Column(
-           children: <Widget>[
-             Row(
-               children: <Widget>[
-                 Text("Balance: $balance",
-                     style: TextStyle(color: Colors.white, fontSize: 20)),
-               ],
-             ),
-           ],
-         ),
-       );
   }
 }

@@ -5,10 +5,11 @@ import 'package:circle_app_alpha/ViewModels/create_circle_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class CreatePostView extends StatelessWidget {
-  final titleController = TextEditingController();
-  final Circle edittingPost;
-  CreatePostView({Key key, this.edittingPost}) : super(key: key);
+class CreateCircleView extends StatelessWidget {
+  final nameController = TextEditingController();
+  final memberUsernameController = TextEditingController();
+  final Circle edittingCircle;
+  CreateCircleView({Key key, this.edittingCircle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +17,11 @@ class CreatePostView extends StatelessWidget {
       viewModelBuilder: () => CreateCircleViewModel(),
       onModelReady: (model) {
         // update the text in the controller
-        titleController.text = edittingPost?.title ?? '';
+        nameController.text = edittingCircle?.name ?? '';
 
-        model.setEdittingPost(edittingPost);
+        memberUsernameController.text = edittingCircle?.name ?? '';
+
+        model.setEdittingCircle(edittingCircle);
       },
       builder: (context, model, child) => Scaffold(
           floatingActionButton: FloatingActionButton(
@@ -27,9 +30,9 @@ class CreatePostView extends StatelessWidget {
                 : CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.white),
             ),
-            onPressed: () {
+            onPressed: () { 
               if (!model.busy) {
-                model.addPost(title: titleController.text);
+                model.createCircle(name: nameController.text, memberUsername: memberUsernameController.text);
               }
             },
             backgroundColor:
@@ -42,28 +45,32 @@ class CreatePostView extends StatelessWidget {
               children: <Widget>[
                 verticalSpace(40),
                 Text(
-                  'Create Post',
+                  'Create Circle',
                   style: TextStyle(fontSize: 26),
                 ),
                 verticalSpaceMedium,
                 InputField(
-                  placeholder: 'Title',
-                  controller: titleController,
+                  placeholder: 'Name of the Circle',
+                  controller: nameController,
                 ),
                 verticalSpaceMedium,
-                Text('Post Image'),
+                Text('Who would you like to invite?'),
                 verticalSpaceSmall,
-                Container(
-                  height: 250,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10)),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Tap to add post image',
-                    style: TextStyle(color: Colors.grey[400]),
-                  ),
-                )
+                InputField(
+                  placeholder: "Friend's username",
+                  controller: memberUsernameController,
+                ),
+//                Container(
+//                  height: 250,
+//                  decoration: BoxDecoration(
+//                      color: Colors.grey[200],
+//                      borderRadius: BorderRadius.circular(10)),
+//                  alignment: Alignment.center,
+//                  child: Text(
+//                    'Tap to add Circle image',
+//                    style: TextStyle(color: Colors.grey[400]),
+//                  ),
+//                )
               ],
             ),
           )),

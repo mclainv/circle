@@ -5,29 +5,31 @@ import 'package:circle_app_alpha/Services/firestore_service.dart';
 import 'package:circle_app_alpha/Services/navigation_service.dart';
 import 'package:circle_app_alpha/ViewModels/base_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:circle_app_alpha/Models/user.dart';
 
 class CreateCircleViewModel extends BaseModel {
   final FirestoreService _firestoreService = locator<FirestoreService>();
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
-  Circle _edittingPost;
+  Circle _edittingCircle;
 
-  bool get _editting => _edittingPost != null;
+  bool get _editting => _edittingCircle != null;
 
-  Future addPost({@required String title}) async {
+  Future createCircle({@required String name, @required String memberUsername}) async {
     setBusy(true);
 
     var result;
 
     if (!_editting) {
       result = await _firestoreService
-          .createCircle(Circle(title: title, fromUser: currentUser.id));
+          .createCircle(Circle(name: name, memberUsername: memberUsername, creatorUser: currentUser.id));
     } else {
       result = await _firestoreService.updateCircle(Circle(
-        title: title,
-        fromUser: _edittingPost.fromUser,
-        circleId: _edittingPost.circleId,
+        name: name,
+        creatorUser: _edittingCircle.creatorUser,
+        memberUsername: _edittingCircle.memberUsername,
+        documentId: _edittingCircle.documentId,
       ));
     }
 
@@ -35,20 +37,20 @@ class CreateCircleViewModel extends BaseModel {
 
     if (result is String) {
       await _dialogService.showDialog(
-        title: 'Cound not create post',
+        title: 'Cound not create group',
         description: result,
       );
     } else {
       await _dialogService.showDialog(
         title: 'Post successfully Added',
-        description: 'Your post has been created',
+        description: 'Your group has been created',
       );
     }
 
     _navigationService.pop();
   }
 
-  void setEdittingPost(Circle edittingPost) {
-    _edittingPost = edittingPost;
+  void setEdittingCircle(Circle edittingCircle) {
+    _edittingCircle = edittingCircle;
   }
 }

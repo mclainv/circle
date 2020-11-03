@@ -24,11 +24,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         viewToShow: HomeView(),
       );
     case CreateCircleViewRoute:
-      var postToEdit = settings.arguments as Circle;
+      var circleToEdit = settings.arguments as Circle;
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: CreateCircleView(
-          edittingPost: postToEdit,
+          edittingCircle: circleToEdit,
         ),
       );
     default:

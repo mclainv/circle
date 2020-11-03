@@ -1,33 +1,33 @@
 import 'package:flutter/foundation.dart';
 
 class Circle {
-  final String title;
-  final String circleId;
-  final String fromUser;
-  final String toUser;
+  final String name;
+  final String documentId;
+  final String creatorUser;
+  final String memberUsername;
 
   Circle({
-    @required this.fromUser,
-    @required this.toUser,
-    this.circleId,
-    this.title,
+    @required this.creatorUser,
+    @required this.memberUsername,
+    this.documentId,
+    this.name,
 });
   Map<String, dynamic> toMap() {
     return {
-      'fromUser': fromUser,
-       'toUser' : toUser,
-         'title': title,
-     'circleId' : circleId,
+      'creatorUser': creatorUser,
+       'memberUsername' : memberUsername,
+         'name': name,
+     'documentId' : documentId,
     };
   }
-  static Circle fromMap(Map<String, dynamic> map, String circleId) {
+  static Circle fromMap(Map<String, dynamic> map, String documentId) {
     if (map == null) return null;
 
     return Circle(
-      title: map['title'],
-      fromUser: map['fromUser'],
-      toUser: map['toUser'],
-      circleId: circleId,
+      name: map['name'],
+      creatorUser: map['creatorUser'],
+      memberUsername: map['memberUsername'],
+      documentId: documentId,
     );
   }
 }

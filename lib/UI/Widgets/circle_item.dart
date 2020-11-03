@@ -21,7 +21,7 @@ class PostItem extends StatelessWidget {
           Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Text(post.title),
+                child: Text(post.name),
               )),
           IconButton(
             icon: Icon(Icons.close),
