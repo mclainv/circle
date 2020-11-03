@@ -38,3 +38,13 @@ double halfScreenWidth(BuildContext context) =>
 
 double thirdScreenWidth(BuildContext context) =>
     screenWidthFraction(context, dividedBy: 3);
+
+Widget titleText(String text, double fontSize) =>
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+
+      children: [
+        Text(text, style: TextStyle(fontSize:fontSize, color: Colors.black)),
+      ],
+    );

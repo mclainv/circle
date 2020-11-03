@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class CreateCircleView extends StatelessWidget {
+
   final nameController = TextEditingController();
   final memberUsernameController = TextEditingController();
   final Circle edittingCircle;
+
   CreateCircleView({Key key, this.edittingCircle}) : super(key: key);
 
   @override

@@ -7,42 +7,14 @@ import 'package:circle_app_alpha/ViewModels/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
+
   HomeView({Key key}) : super(key: key);
-
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-
-  bool isCollapsed = true;
-  final Duration duration = const Duration(milliseconds: 300);
-  AnimationController _controller;
-  Animation<double> scaleAnimation;
-  Animation<double> menuScaleAnimation;
-  Animation<Offset> _slideAnimation;
 
   //This might not be the best idea, because I'm not exactly sure which state is being initialized,
   //and it's odd that there's no @override present. But I suppose there would be nothing /to/ override if
   //there is no StatefulWidget present
-  @override
-  void initState() {
-    super.initState();
-      //_controller = AnimationController(vsync: , duration: duration);
-      scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
-      menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
-      _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(_controller);
 
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
@@ -58,8 +30,7 @@ class _HomeViewState extends State<HomeView> {
         body: Scaffold(
           body: Stack(
           children: <Widget>[
-            menu(context, model.currentUser),
-//            dashboard(context, model.circles, model.leaveCircle, model.editCircle),
+            dashboard(context, model.circles, model.leaveCircle, model.editCircle),
             ],
           ),
         ),
@@ -67,23 +38,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
   Widget dashboard(context, List<Circle> circles, Function leavecircle, Function editcircle) {
-    return AnimatedPositioned(
-        duration: duration,
-        top: 0,
-        bottom: 0,
-        left: isCollapsed ? 0 : 0.6 * screenWidth(context),
-        right: isCollapsed ? 0 : -0.4 * screenWidth(context),
-
-        child: ScaleTransition(
-          scale: scaleAnimation,
-
-          child: Material(
-            animationDuration: duration,
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-            elevation: 8,
-            color: backgroundColor,
-
-            child: Container(
+    return Container(
               padding: const EdgeInsets.only(left:16, right: 16, top: 48),
 
               child: Column(
@@ -94,17 +49,6 @@ class _HomeViewState extends State<HomeView> {
                     mainAxisSize: MainAxisSize.min,
 
                     children: [
-
-                      InkWell(child: Icon(Icons.menu, color: Colors.blue), onTap: () {
-                          if (isCollapsed)
-                            _controller.forward();
-                          else
-                            _controller.reverse();
-                          isCollapsed = !isCollapsed;
-                      },),
-
-                      horizontalSpaceLarge,
-
                       Text("My Dashboard", style: TextStyle(fontSize:26, color: Colors.black),),
                     ],
                   ),
@@ -118,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
                       pageSnapping: true,
 
                       children: <Widget>[
-                        Container(
+                        Container( //RED
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           color: Colors.redAccent,
                           width: 100,
@@ -128,15 +72,8 @@ class _HomeViewState extends State<HomeView> {
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                titleText("Circles", 24),
                                 verticalSpace(35),
-                                Row(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 20,
-                                      child: Image.asset('assets/images/title.png'),
-                                    ),
-                                  ],
-                                ),
                                 Expanded(
                                     child: circles != null
                                         ? ListView.builder(
@@ -173,70 +110,67 @@ class _HomeViewState extends State<HomeView> {
                     ])
                   ),]
               ),
-            )
-          )
-        )
-    );
+            );
     }
-  Widget menu(ctxt, User currentuser) {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: ScaleTransition(
-        scale: menuScaleAnimation,
-        child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            //Only pads the left side by 16 pixels
-            child: Align(
-              alignment: Alignment.centerLeft,
-              //Aligns the text itself but not the text widgets
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Image(
-                        height: 50,
-                        width: 50,
-                        image: AssetImage('assets/profilePictureDefault.png'),
-                      ),
-                      SizedBox(width: 250)],
-                  ),
-                  InkWell(child: Text(currentuser.username,
-                      style: TextStyle(color: Colors.white, fontSize: 20))),
-                  SizedBox(height: 100),
-                  InkWell(child: Text("Dashboard",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(child: Text("Circles",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                      onTap: () {}
-                      ),
-                  SizedBox(height: 20),
-                  InkWell(child: Text("Friends",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                      onTap: () {}
-                      ),
-                  SizedBox(height: 20),
-                  Text("Settings",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  SizedBox(height: 20),
-                  InkWell(child: Text("Sign Out",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                      onTap: () {
- //
-                        Navigator.of(ctxt).pushNamedAndRemoveUntil(
-                            '/', (Route<dynamic> route) => false);
-                      })
-                ],
-              ),
-            )
-        ),
-      ),
-    );
-  }
+//  Widget menu(ctxt, User currentuser) {
+//    return SlideTransition(
+//      position: _slideAnimation,
+//      child: ScaleTransition(
+//        scale: menuScaleAnimation,
+//        child: Padding(
+//            padding: const EdgeInsets.only(left: 16.0),
+//            //Only pads the left side by 16 pixels
+//            child: Align(
+//              alignment: Alignment.centerLeft,
+//              //Aligns the text itself but not the text widgets
+//              child: Column(
+//                mainAxisSize: MainAxisSize.min,
+//                mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  Row(
+//                    mainAxisAlignment: MainAxisAlignment.end,
+//                    children: <Widget>[
+//                      Image(
+//                        height: 50,
+//                        width: 50,
+//                        image: AssetImage('assets/profilePictureDefault.png'),
+//                      ),
+//                      SizedBox(width: 250)],
+//                  ),
+//                  InkWell(child: Text(currentuser.username,
+//                      style: TextStyle(color: Colors.white, fontSize: 20))),
+//                  SizedBox(height: 100),
+//                  InkWell(child: Text("Dashboard",
+//                      style: TextStyle(color: Colors.white, fontSize: 20)),
+//                    onTap: () {},
+//                  ),
+//                  SizedBox(height: 20),
+//                  InkWell(child: Text("Circles",
+//                      style: TextStyle(color: Colors.white, fontSize: 20)),
+//                      onTap: () {}
+//                      ),
+//                  SizedBox(height: 20),
+//                  InkWell(child: Text("Friends",
+//                      style: TextStyle(color: Colors.white, fontSize: 20)),
+//                      onTap: () {}
+//                      ),
+//                  SizedBox(height: 20),
+//                  Text("Settings",
+//                      style: TextStyle(color: Colors.white, fontSize: 20)),
+//                  SizedBox(height: 20),
+//                  InkWell(child: Text("Sign Out",
+//                      style: TextStyle(color: Colors.white, fontSize: 20)),
+//                      onTap: () {
+// //
+//                        Navigator.of(ctxt).pushNamedAndRemoveUntil(
+//                            '/', (Route<dynamic> route) => false);
+//                      })
+//                ],
+//              ),
+//            )
+//        ),
+//      ),
+//    );
+//  }
 }
