@@ -2,7 +2,7 @@ import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/UI/Shared/app_colors.dart';
 import 'package:circle_app_alpha/UI/Shared/ui_helpers.dart';
-import 'package:circle_app_alpha/ui/widgets/circle_item.dart';
+import 'package:circle_app_alpha/UI/Widgets/circle_item.dart';
 import 'package:circle_app_alpha/ViewModels/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -10,10 +10,6 @@ import 'package:stacked/stacked.dart';
 class HomeView extends StatelessWidget {
 
   HomeView({Key key}) : super(key: key);
-
-  //This might not be the best idea, because I'm not exactly sure which state is being initialized,
-  //and it's odd that there's no @override present. But I suppose there would be nothing /to/ override if
-  //there is no StatefulWidget present
 
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
@@ -70,7 +66,7 @@ class HomeView extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 titleText("Circles", 24),
                                 verticalSpace(35),
@@ -81,8 +77,8 @@ class HomeView extends StatelessWidget {
                                       itemBuilder: (context, index) =>
                                           GestureDetector(
                                             onTap: () => editcircle(index),
-                                            child: PostItem(
-                                              post: circles[index],
+                                            child: CircleItem(
+                                              circle: circles[index],
                                               onDeleteItem: () => leavecircle(index),
                                             ),
                                           ),

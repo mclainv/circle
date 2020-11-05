@@ -41,7 +41,7 @@ double thirdScreenWidth(BuildContext context) =>
 
 Widget titleText(String text, double fontSize) =>
     Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       mainAxisSize: MainAxisSize.min,
 
       children: [
