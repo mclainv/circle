@@ -48,9 +48,6 @@ class HomeViewModel extends BaseModel {
       setBusy(false);
     }
   }
-  Future navigateToCreateView() async {
-    await _navigationService.navigateTo(CreateCircleViewRoute);
-  }
   void editCircle(int index) {
     _navigationService.navigateTo(CreateCircleViewRoute,
         arguments: _circles[index]);
