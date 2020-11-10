@@ -18,7 +18,7 @@ class HomeView extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           child:
           !model.busy ? Icon(Icons.add) : CircularProgressIndicator(),
-          onPressed: model.navigateToCreateView,
+          onPressed: model.navigateToCreateCircleView,
         ),
         drawer: DrawerMenu(),
         appBar: AppBar(

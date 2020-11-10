@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 
 class DrawerMenu extends StatefulWidget {
+  DrawerMenu();
+
   @override
   _DrawerMenu createState() => _DrawerMenu();
 }
@@ -27,9 +29,13 @@ class _DrawerMenu extends State<DrawerMenu> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.message),
-            title: Text('Messages'),
+            leading: Icon(Icons.supervised_user_circle),
+            title: Text('Circles'),
             //onTap: (),
+          ),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text('Friends'),
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
