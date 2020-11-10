@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,9 +11,14 @@ class FirestoreService {
       Firestore.instance.collection('users');
   final CollectionReference _circlesCollectionReference =
       Firestore.instance.collection('circles');
+  final CollectionReference _friendsCollectionReference =
+      Firestore.instance.collection('friends');
 
   final StreamController<List<Circle>> _circlesController =
   StreamController<List<Circle>>.broadcast();
+
+  final StreamController<List<Friend>> _friendsController =
+  StreamController<List<Friend>>.broadcast();
 
   Future createUser(User user) async {
     try {
@@ -45,36 +51,37 @@ class FirestoreService {
     }
   }
 
-  Future getCirclesOnceOff() async {
-    try {
-      var postDocumentSnapshot = await _circlesCollectionReference.getDocuments();
-      if (postDocumentSnapshot.documents.isNotEmpty) {
-        return postDocumentSnapshot.documents
-            .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
-            .where((mappedItem) => mappedItem.name != null)
-            .toList();
-      }
-    } catch (e) {
-      // TODO: Find or create a way to repeat error handling without so much repeated code
-      if (e is PlatformException) {
-        return e.message;
-      }
+//  Future getCirclesOnceOff() async {
+//    try {
+//      var postDocumentSnapshot = await _circlesCollectionReference.getDocuments();
+//      if (postDocumentSnapshot.documents.isNotEmpty) {
+//        return postDocumentSnapshot.documents
+//            .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
+//            .where((mappedItem) => mappedItem.name != null)
+//            .toList();
+//      }
+//    } catch (e) {
+//      // TODO: Find or create a way to repeat error handling without so much repeated code
+//      if (e is PlatformException) {
+//        return e.message;
+//      }
+//
+//      return e.toString();
+//    }
+//  }
 
-      return e.toString();
-    }
-  }
-
-  Stream listenToCirclesRealTime() {
-    // Register the handler for when the posts data changes
-    _circlesCollectionReference.snapshots().listen((postsSnapshot) {
-      if (postsSnapshot.documents.isNotEmpty) {
-        var posts = postsSnapshot.documents
+  Stream listenToCirclesRealTime(String username) {
+    _circlesCollectionReference.snapshots().listen((circlesSnapshot) {
+      if (circlesSnapshot.documents.isNotEmpty) {
+        var circles = circlesSnapshot.documents
+            .where((mappedItem) => mappedItem.data['creatorUser'] == username
+              || mappedItem.data['memberUsername'].toString().contains(username)) //TODO: check against user's username
             .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
             .where((mappedItem) => mappedItem.name != null)
             .toList();
 
         // Add the posts onto the controller
-        _circlesController.add(posts);
+        _circlesController.add(circles);
       }
     });
 
@@ -110,6 +117,22 @@ class FirestoreService {
     }
   }
 
-  listenToFriendsRealTime() {}
+  listenToFriendsRealTime() {
+    _friendsCollectionReference.snapshots().listen((friendsSnapshot) {
+      if (friendsSnapshot.documents.isNotEmpty) {
+        var friends = friendsSnapshot.documents
+            //
+            .where((mappedItem) => mappedItem.data['username'] == 'this'
+            || mappedItem.data['username2'] == 'that') //TODO: check against user's username
+            .map((snapshot) => Friend.fromMap(snapshot.data, snapshot.documentID))
+            .where((mappedItem) => mappedItem.name != null)
+            .toList();
+        // Add the friends onto the controller
+        _friendsController.add(friends);
+      }
+    });
+
+    return _friendsController.stream;
+  }
 
 }

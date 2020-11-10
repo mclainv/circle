@@ -19,7 +19,7 @@ class FriendsView extends StatelessWidget {
           !model.busy ? Icon(Icons.add) : CircularProgressIndicator(),
           onPressed: model.navigateToCreateCircleView,
         ),
-        drawer: DrawerMenu(),
+        drawer: DrawerMenu(model.navigateToFriendsView),
         appBar: AppBar(
           title: Text("Arc Flow"),
         ),

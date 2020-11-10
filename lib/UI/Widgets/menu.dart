@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 
 class DrawerMenu extends StatefulWidget {
-  DrawerMenu();
+  DrawerMenu(Function f);
 
   @override
   _DrawerMenu createState() => _DrawerMenu();
@@ -36,6 +36,7 @@ class _DrawerMenu extends State<DrawerMenu> {
           ListTile(
             leading: Icon(Icons.people),
             title: Text('Friends'),
+            onTap: ,
           ),
           ListTile(
             leading: Icon(Icons.account_circle),

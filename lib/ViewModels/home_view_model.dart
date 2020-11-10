@@ -18,11 +18,11 @@ class HomeViewModel extends BaseModel {
   List<Circle> _circles;
 
   List<Circle> get circles => _circles;
-  User get currentUser => currentUser;
+
   void listenToCircles() {
     setBusy(true);
-
-    _firestoreService.listenToCirclesRealTime().listen((circlesData) {
+    String username = currentUser.username;
+    _firestoreService.listenToCirclesRealTime(username).listen((circlesData) {
       List<Circle> updatedCircles = circlesData;
       if (updatedCircles != null && updatedCircles.length > 0) {
         _circles = updatedCircles;

@@ -59,6 +59,7 @@ flutter:
   assets:
     - assets/circle_components/
     - assets/icons/
+    - assets/circle.jpg
     - assets/profilePictureDefault.png
   #  - images/a_dot_ham.jpeg
 

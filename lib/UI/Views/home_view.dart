@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 class HomeView extends StatelessWidget {
 
   HomeView({Key key}) : super(key: key);
-
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
@@ -20,7 +19,7 @@ class HomeView extends StatelessWidget {
           !model.busy ? Icon(Icons.add) : CircularProgressIndicator(),
           onPressed: model.navigateToCreateCircleView,
         ),
-        drawer: DrawerMenu(),
+        drawer: DrawerMenu(model.navigateToFriendsView),
         appBar: AppBar(
           title: Text("Arc Flow"),
         ),

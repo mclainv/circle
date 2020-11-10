@@ -23,7 +23,7 @@ class CreateCircleViewModel extends BaseModel {
 
     if (!_editting) {
       result = await _firestoreService
-          .createCircle(Circle(name: name, memberUsername: memberUsername, creatorUser: currentUser.id));
+          .createCircle(Circle(name: name, memberUsername: memberUsername, creatorUser: currentUser.username));
     } else {
       result = await _firestoreService.updateCircle(Circle(
         name: name,
@@ -42,7 +42,7 @@ class CreateCircleViewModel extends BaseModel {
       );
     } else {
       await _dialogService.showDialog(
-        title: 'Post successfully Added',
+        title: 'Circle successfully Added',
         description: 'Your group has been created',
       );
     }
