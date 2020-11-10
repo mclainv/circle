@@ -25,19 +25,19 @@ class BaseModel extends ChangeNotifier {
   Future navigateToFriendsView() async {
     await _navigationService.navigateTo(FriendsViewRoute);
   }
-  Future navigateToProfileView() async {
-    await _navigationService.navigateTo(ProfleViewRoute);
-  }
-  Future navigateToSettingsView() async {
-    await _navigationService.navigateTo(SettingsViewRoute);
-  }
-  Future navigateToCirclesView() async {
-    await _navigationService.navigateTo(CirclesViewRoute);
-  }
-  Future navigateToIndividualCircleView() async {
-    await _navigationService.navigateTo(IndividualCircleViewRoute);
-  }
-  Future navigateToUserProfile() async {
-    await _navigationService.navigateTo(UserProfileViewRoute);
-  }
+//  Future navigateToProfileView() async {
+//    await _navigationService.navigateTo(ProfleViewRoute);
+//  }
+//  Future navigateToSettingsView() async {
+//    await _navigationService.navigateTo(SettingsViewRoute);
+//  }
+//  Future navigateToCirclesView() async {
+//    await _navigationService.navigateTo(CirclesViewRoute);
+//  }
+//  Future navigateToIndividualCircleView() async {
+//    await _navigationService.navigateTo(IndividualCircleViewRoute);
+//  }
+//  Future navigateToUserProfile() async {
+//    await _navigationService.navigateTo(UserProfileViewRoute);
+//  }
 }

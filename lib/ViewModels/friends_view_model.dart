@@ -1,3 +1,4 @@
+import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Services/dialog_service.dart';
 import 'package:circle_app_alpha/locator.dart';
@@ -15,5 +16,22 @@ class FriendsViewModel extends BaseModel {
   final DialogService _dialogService = locator<DialogService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
+  List<Friend> _friends;
 
+  List<Friend> get friends => _friends;
+  User get currentUser => currentUser;
+  void listenToFriends() {
+    setBusy(true);
+
+    _firestoreService.listenToFriendsRealTime().listen((friendsData) {
+      List<Friend> updatedFriends = friendsData;
+      if (updatedFriends != null && updatedFriends.length > 0) {
+        _friends = updatedFriends;
+
+        notifyListeners();
+      }
+
+      setBusy(false);
+    });
+  }
 }
