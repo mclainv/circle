@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 
-class DrawerMenu extends StatefulWidget {
-  DrawerMenu(Function f);
+class DrawerMenu extends StatelessWidget {
+  final Function friendsNav;
 
-  @override
-  _DrawerMenu createState() => _DrawerMenu();
-}
+  const DrawerMenu(Future Function() navigateToFriendsView, {
+    Key key,
+    this.friendsNav,
+  }) : super(key: key);
 
-class _DrawerMenu extends State<DrawerMenu> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: const <Widget>[
+        children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
@@ -36,7 +36,7 @@ class _DrawerMenu extends State<DrawerMenu> {
           ListTile(
             leading: Icon(Icons.people),
             title: Text('Friends'),
-            onTap: ,
+            onTap: friendsNav,
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
