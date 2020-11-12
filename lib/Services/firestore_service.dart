@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:circle_app_alpha/Models/friend.dart';
+import 'package:circle_app_alpha/Models/friend_request.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,11 +14,16 @@ class FirestoreService {
       Firestore.instance.collection('circles');
   final CollectionReference _friendsCollectionReference =
       Firestore.instance.collection('friends');
+  final CollectionReference _friendRequestsCollectionReference =
+      Firestore.instance.collection('friendRequests');
 
   final StreamController<List<Circle>> _circlesController =
   StreamController<List<Circle>>.broadcast();
 
   final StreamController<List<Friend>> _friendsController =
+  StreamController<List<Friend>>.broadcast();
+
+  final StreamController<List<Friend>> _friendRequestsController =
   StreamController<List<Friend>>.broadcast();
 
   Future createUser(User user) async {
@@ -28,6 +34,16 @@ class FirestoreService {
           .toJson());
     } catch (e) {
       return e;
+    }
+  }
+  Future createFriendRequest(FriendRequest friendRequest) async {
+    try {
+      await _friendRequestsCollectionReference.add(friendRequest.toJson());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+      return e.toString();
     }
   }
   Future getUser(String uid) async {
@@ -42,11 +58,9 @@ class FirestoreService {
     try {
       await _circlesCollectionReference.add(circle.toMap());
     } catch (e) {
-      // TODO: Find or create a way to repeat error handling without so much repeated code
       if (e is PlatformException) {
         return e.message;
       }
-
       return e.toString();
     }
   }
@@ -61,7 +75,6 @@ class FirestoreService {
 //            .toList();
 //      }
 //    } catch (e) {
-//      // TODO: Find or create a way to repeat error handling without so much repeated code
 //      if (e is PlatformException) {
 //        return e.message;
 //      }
@@ -75,7 +88,7 @@ class FirestoreService {
       if (circlesSnapshot.documents.isNotEmpty) {
         var circles = circlesSnapshot.documents
             .where((mappedItem) => mappedItem.data['creatorUser'] == username
-              || mappedItem.data['memberUsername'].toString().contains(username)) //TODO: check against user's username
+              || mappedItem.data['memberUsername'].toString().contains(username))
             .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
             .where((mappedItem) => mappedItem.name != null)
             .toList();
@@ -133,6 +146,22 @@ class FirestoreService {
     });
 
     return _friendsController.stream;
+  }
+
+  listenToFriendRequestsRealTime(String username) {
+    _friendRequestsCollectionReference.snapshots().listen((friendRequestsSnapshot) {
+      if (friendRequestsSnapshot.documents.isNotEmpty) {
+        var friendRequest = friendRequestsSnapshot.documents
+            .where((mappedItem) => mappedItem.data['sentToUsername'] == username)
+            .map((snapshot) => Friend.fromMap(snapshot.data, snapshot.documentID))
+            .where((mappedItem) => mappedItem.name != null)
+            .toList();
+        // Add the friendRequests onto the controller
+        _friendsController.add(friendRequest);
+      }
+    });
+
+    return _friendRequestsController.stream;
   }
 
 }

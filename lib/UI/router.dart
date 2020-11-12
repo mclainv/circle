@@ -1,5 +1,6 @@
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'Views/create_circle_view.dart';
+import 'Views/friends_view.dart';
 import 'Views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
@@ -29,6 +30,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name,
         viewToShow: CreateCircleView(
           edittingCircle: circleToEdit,
+        ),
+      );
+    case FriendsViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: FriendsView(
         ),
       );
     default:

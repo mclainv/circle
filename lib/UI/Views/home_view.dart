@@ -1,4 +1,4 @@
-import 'package:circle_app_alpha/UI/Widgets/menu.dart';
+import 'package:circle_app_alpha/UI/Views/menu_view.dart';
 import 'package:circle_app_alpha/UI/Widgets/dashboard.dart';
 import 'package:circle_app_alpha/ViewModels/home_view_model.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class HomeView extends StatelessWidget {
           !model.busy ? Icon(Icons.add) : CircularProgressIndicator(),
           onPressed: model.navigateToCreateCircleView,
         ),
-        drawer: DrawerMenu(model.navigateToFriendsView),
+        drawer: MenuView(),
         appBar: AppBar(
           title: Text("Arc Flow"),
         ),
