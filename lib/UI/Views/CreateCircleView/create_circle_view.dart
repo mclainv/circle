@@ -1,7 +1,7 @@
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:circle_app_alpha/ui/shared/ui_helpers.dart';
 import 'package:circle_app_alpha/ui/widgets/input_field.dart';
-import 'package:circle_app_alpha/ViewModels/create_circle_view_model.dart';
+import 'package:circle_app_alpha/UI/Views/CreateCircleView/create_circle_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 

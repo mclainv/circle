@@ -1,6 +1,6 @@
 import 'package:circle_app_alpha/UI/Views/menu_view.dart';
 import 'package:circle_app_alpha/UI/Widgets/dashboard.dart';
-import 'package:circle_app_alpha/ViewModels/home_view_model.dart';
+import 'package:circle_app_alpha/UI/Views/HomeView/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 

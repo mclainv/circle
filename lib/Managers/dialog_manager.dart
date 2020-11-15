@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:circle_app_alpha/locator.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
 import 'package:circle_app_alpha/Models/dialog_models.dart';
-import 'package:circle_app_alpha/Services/dialog_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/dialog_service.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget child;

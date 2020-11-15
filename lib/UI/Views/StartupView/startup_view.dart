@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:circle_app_alpha/ViewModels/startup_view_model.dart';
+import 'package:circle_app_alpha/UI/Views/StartupView/startup_view_model.dart';
 
 class StartUpView extends StatelessWidget {
   const StartUpView({Key key}) : super(key: key);

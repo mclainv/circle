@@ -1,19 +1,19 @@
 import 'package:circle_app_alpha/Models/user.dart';
-import 'package:circle_app_alpha/Services/dialog_service.dart';
-import 'package:circle_app_alpha/locator.dart';
-import 'package:circle_app_alpha/Services/authentication_service.dart';
-import 'package:circle_app_alpha/Services/firestore_service.dart';
-import 'package:circle_app_alpha/Services/navigation_service.dart';
+import 'package:circle_app_alpha/Services/CustomServices/circle_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/dialog_service.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
+import 'package:circle_app_alpha/Services/StandardServices/authentication_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/firestore_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/navigation_service.dart';
 import 'package:circle_app_alpha/ViewModels/base_model.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 
 class HomeViewModel extends BaseModel {
-  final AuthenticationService _authenticationService =
-  locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
+  final CircleService _circleService = locator<CircleService>();
 
   List<Circle> _circles;
 
@@ -22,7 +22,7 @@ class HomeViewModel extends BaseModel {
   void listenToCircles() {
     setBusy(true);
     String username = currentUser.username;
-    _firestoreService.listenToCirclesRealTime(username).listen((circlesData) {
+    _circleService.listenToCirclesRealTime(username).listen((circlesData) {
       List<Circle> updatedCircles = circlesData;
       if (updatedCircles != null && updatedCircles.length > 0) {
         _circles = updatedCircles;
@@ -44,7 +44,7 @@ class HomeViewModel extends BaseModel {
 
     if (dialogResponse.confirmed) {
       setBusy(true);
-      await _firestoreService.leaveCircle(_circles[index], currentUser);
+      await _circleService.leaveCircle(_circles[index], currentUser);
       setBusy(false);
     }
   }

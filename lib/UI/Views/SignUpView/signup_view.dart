@@ -4,7 +4,7 @@ import 'package:circle_app_alpha/UI/Widgets/expansion_list.dart';
 import 'package:circle_app_alpha/UI/Widgets/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:circle_app_alpha/ViewModels/signup_view_model.dart';
+import 'package:circle_app_alpha/UI/Views/SignUpView/signup_view_model.dart';
 
 class SignUpView extends StatelessWidget {
   final emailController = TextEditingController();

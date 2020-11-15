@@ -1,8 +1,8 @@
-import 'package:circle_app_alpha/locator.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:circle_app_alpha/Services/firestore_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/firestore_service.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

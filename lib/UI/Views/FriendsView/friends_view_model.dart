@@ -1,11 +1,12 @@
 import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/relationship.dart';
 import 'package:circle_app_alpha/Models/user.dart';
-import 'package:circle_app_alpha/Services/dialog_service.dart';
-import 'package:circle_app_alpha/locator.dart';
-import 'package:circle_app_alpha/Services/authentication_service.dart';
-import 'package:circle_app_alpha/Services/firestore_service.dart';
-import 'package:circle_app_alpha/Services/navigation_service.dart';
+import 'package:circle_app_alpha/Services/CustomServices/friend_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/dialog_service.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
+import 'package:circle_app_alpha/Services/StandardServices/authentication_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/firestore_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/navigation_service.dart';
 import 'package:circle_app_alpha/ViewModels/base_model.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
@@ -16,6 +17,7 @@ class FriendsViewModel extends BaseModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
+  final FriendService _friendsService = locator<FriendService>();
 
   List<Friend> _friends;
 
@@ -25,7 +27,7 @@ class FriendsViewModel extends BaseModel {
   void listenToFriends() {
     setBusy(true);
     String username = currentUser.username;
-    _firestoreService.listenToFriendsRealTime(username).listen((friendsData) {
+    _friendsService.listenToFriendsRealTime(username).listen((friendsData) {
       List<Friend> updatedFriends = friendsData;
       if (updatedFriends != null && updatedFriends.length > 0) {
         _friends = updatedFriends;

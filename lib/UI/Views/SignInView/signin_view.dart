@@ -4,7 +4,7 @@ import 'package:circle_app_alpha/ui/Widgets/input_field.dart';
 import 'package:circle_app_alpha/UI/Widgets/text_link.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:circle_app_alpha/ViewModels/signin_view_model.dart';
+import 'package:circle_app_alpha/UI/Views/SignInView/signin_view_model.dart';
 
 class LoginView extends StatelessWidget {
   final emailController = TextEditingController();

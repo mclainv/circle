@@ -1,11 +1,11 @@
 import 'package:circle_app_alpha/Models/circle.dart';
-import 'Views/create_circle_view.dart';
-import 'Views/friends_view.dart';
-import 'Views/home_view.dart';
+import 'Views/CreateCircleView/create_circle_view.dart';
+import 'Views/FriendsView/friends_view.dart';
+import 'Views/HomeView/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
-import 'Views/signin_view.dart';
-import 'Views/signup_view.dart';
+import 'Views/SignInView/signin_view.dart';
+import 'Views/SignUpView/signup_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {

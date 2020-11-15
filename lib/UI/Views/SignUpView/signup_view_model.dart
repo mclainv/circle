@@ -1,11 +1,11 @@
 import 'package:circle_app_alpha/Constants/route_names.dart';
-import 'package:circle_app_alpha/locator.dart';
-import 'package:circle_app_alpha/Services/authentication_service.dart';
-import 'package:circle_app_alpha/Services/dialog_service.dart';
-import 'package:circle_app_alpha/Services/navigation_service.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
+import 'package:circle_app_alpha/Services/StandardServices/authentication_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/dialog_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/navigation_service.dart';
 import 'package:flutter/foundation.dart';
 
-import 'base_model.dart';
+import '../../../ViewModels/base_model.dart';
 
 class SignUpViewModel extends BaseModel {
   final AuthenticationService _authenticationService =

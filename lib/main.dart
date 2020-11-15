@@ -1,10 +1,10 @@
-import 'UI/Views/startup_view.dart';
+import 'UI/Views/StartupView/startup_view.dart';
 import 'package:flutter/material.dart';
-import 'Services/navigation_service.dart';
-import 'Services/dialog_service.dart';
+import 'Services/StandardServices/navigation_service.dart';
+import 'Services/StandardServices/dialog_service.dart';
 import 'Managers/dialog_manager.dart';
 import 'UI/router.dart';
-import 'locator.dart';
+import 'Managers/locator.dart';
 
 void main() {
   // Register all the models and services before the app starts

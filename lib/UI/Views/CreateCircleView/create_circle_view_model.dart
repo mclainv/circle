@@ -1,8 +1,9 @@
-import 'package:circle_app_alpha/locator.dart';
+import 'package:circle_app_alpha/Services/CustomServices/circle_service.dart';
+import 'package:circle_app_alpha/Managers/locator.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
-import 'package:circle_app_alpha/Services/dialog_service.dart';
-import 'package:circle_app_alpha/Services/firestore_service.dart';
-import 'package:circle_app_alpha/Services/navigation_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/dialog_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/firestore_service.dart';
+import 'package:circle_app_alpha/Services/StandardServices/navigation_service.dart';
 import 'package:circle_app_alpha/ViewModels/base_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:circle_app_alpha/Models/user.dart';
@@ -11,6 +12,7 @@ class CreateCircleViewModel extends BaseModel {
   final FirestoreService _firestoreService = locator<FirestoreService>();
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
+  final CircleService _circleService = locator<CircleService>();
 
   Circle _edittingCircle;
 
@@ -22,10 +24,10 @@ class CreateCircleViewModel extends BaseModel {
     var result;
 
     if (!_editting) {
-      result = await _firestoreService
+      result = await _circleService
           .createCircle(Circle(name: name, memberUsername: memberUsername, creatorUser: currentUser.username));
     } else {
-      result = await _firestoreService.updateCircle(Circle(
+      result = await _circleService.updateCircle(Circle(
         name: name,
         creatorUser: _edittingCircle.creatorUser,
         memberUsername: _edittingCircle.memberUsername,
