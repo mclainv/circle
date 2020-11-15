@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/friend_request.dart';
+import 'package:circle_app_alpha/Models/relationship.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,16 +13,18 @@ class FirestoreService {
       Firestore.instance.collection('users');
   final CollectionReference _circlesCollectionReference =
       Firestore.instance.collection('circles');
-  final CollectionReference _friendsCollectionReference =
-      Firestore.instance.collection('friends');
+  final CollectionReference _relationshipCollectionReference =
+      Firestore.instance.collection('relationships');
   final CollectionReference _friendRequestsCollectionReference =
       Firestore.instance.collection('friendRequests');
+  final CollectionReference _profileCollectionReference =
+      Firestore.instance.collection('profiles');
 
   final StreamController<List<Circle>> _circlesController =
   StreamController<List<Circle>>.broadcast();
 
-  final StreamController<List<Friend>> _friendsController =
-  StreamController<List<Friend>>.broadcast();
+  final StreamController<List<Relationship>> _relationshipController =
+  StreamController<List<Relationship>>.broadcast();
 
   final StreamController<List<Friend>> _friendRequestsController =
   StreamController<List<Friend>>.broadcast();
@@ -54,6 +57,14 @@ class FirestoreService {
       return e;
     }
   }
+  Future getProfileOfFriend(List<Relationship> relationships) async {
+    _profileCollectionReference.snapshots().listen((profilesSnapshot) {
+
+      var profiles = profilesSnapshot.documents.where((mappedItem) => mappedItem['username']);
+      return profiles;
+    });
+  }
+
   Future createCircle(Circle circle) async {
     try {
       await _circlesCollectionReference.add(circle.toMap());
@@ -130,22 +141,21 @@ class FirestoreService {
     }
   }
 
-  listenToFriendsRealTime() {
-    _friendsCollectionReference.snapshots().listen((friendsSnapshot) {
-      if (friendsSnapshot.documents.isNotEmpty) {
-        var friends = friendsSnapshot.documents
-            //
-            .where((mappedItem) => mappedItem.data['username'] == 'this'
-            || mappedItem.data['username2'] == 'that') //TODO: check against user's username
-            .map((snapshot) => Friend.fromMap(snapshot.data, snapshot.documentID))
-            .where((mappedItem) => mappedItem.name != null)
+  listenToRelationshipsRealTime(String username) {
+    _relationshipCollectionReference.snapshots().listen((relationshipsSnapshot) {
+      if (relationshipsSnapshot.documents.isNotEmpty) {
+        var friends = relationshipsSnapshot.documents
+
+            .where((mappedItem) => mappedItem.data['hetaera'] == username
+            || mappedItem.data['sappho'] == username) //Might be able to shorten this code piece
+            .map((snapshot) => Relationship.fromMap(snapshot.data, snapshot.documentID))
             .toList();
         // Add the friends onto the controller
-        _friendsController.add(friends);
+        _relationshipController.add(friends);
       }
     });
 
-    return _friendsController.stream;
+    return _relationshipController.stream;
   }
 
   listenToFriendRequestsRealTime(String username) {
@@ -157,7 +167,7 @@ class FirestoreService {
             .where((mappedItem) => mappedItem.name != null)
             .toList();
         // Add the friendRequests onto the controller
-        _friendsController.add(friendRequest);
+        _friendRequestsController.add(friendRequest);
       }
     });
 
