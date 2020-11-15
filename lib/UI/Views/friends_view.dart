@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 class FriendsView extends StatelessWidget {
 
   FriendsView({Key key}) : super(key: key);
-
   Widget build(BuildContext context) {
     return ViewModelBuilder<FriendsViewModel>.reactive(
       viewModelBuilder: () => FriendsViewModel(),
@@ -25,7 +24,7 @@ class FriendsView extends StatelessWidget {
           title: Text("Arc Flow"),
         ),
         body: new ListView.separated(
-          itemCount: 5,
+          itemCount: 1,
           itemBuilder: (BuildContext context, int index) {
             if(model.friends != null) {
               return FriendItem(friend: model.friends.elementAt(index));
@@ -34,7 +33,7 @@ class FriendsView extends StatelessWidget {
               return Container();
             }
           },
-          separatorBuilder: (BuildContext context, int Index) => const Divider(),
+          separatorBuilder: (BuildContext context, int index) => const Divider(),
         )
       ),
     );

@@ -17,8 +17,6 @@ class FriendsViewModel extends BaseModel {
   final DialogService _dialogService = locator<DialogService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
-  List<Relationship> _relationships;
-
   List<Friend> _friends;
 
   List<Friend> get friends => _friends;
@@ -27,7 +25,7 @@ class FriendsViewModel extends BaseModel {
   void listenToFriends() {
     setBusy(true);
     String username = currentUser.username;
-    _firestoreService.listenToRelationshipsRealTime(username).listen((relationshipData) {
+    _firestoreService.listenToFriendsRealTime(username).listen((friendsData) {
       List<Friend> updatedFriends = friendsData;
       if (updatedFriends != null && updatedFriends.length > 0) {
         _friends = updatedFriends;

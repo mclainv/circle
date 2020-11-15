@@ -14,6 +14,15 @@ class Relationship {
       'hetaera': hetaera,
     };
   }
+  String getUsernameOfFriend(String username) {
+    if(this.sappho != username) {
+      return this.hetaera;
+    }
+    if(this.sappho == username) {
+      return this.sappho;
+    }
+    return null;
+  }
   static Relationship fromMap(Map<String, dynamic> map, String documentId) {
 
     if (map == null) return null;
