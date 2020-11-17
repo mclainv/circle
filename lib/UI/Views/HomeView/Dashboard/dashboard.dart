@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:circle_app_alpha/UI/Shared/ui_helpers.dart';
-import 'package:circle_app_alpha/UI/Widgets/circle_item.dart';
+import 'package:circle_app_alpha/UI/Views/HomeView/Dashboard/circle_dashboard_item.dart';
 
 Widget dashboard(context, List<Circle> circles, Function leavecircle, Function editcircle) {
   return Padding(

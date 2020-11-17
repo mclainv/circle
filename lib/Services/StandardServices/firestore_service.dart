@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/friend_request.dart';
-import 'package:circle_app_alpha/Models/relationship.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,8 +12,6 @@ class FirestoreService {
       Firestore.instance.collection('users');
   final CollectionReference _friendRequestsCollectionReference =
       Firestore.instance.collection('friendRequests');
-
-
 
   Future createUser(User user) async {
     try {
@@ -39,6 +36,7 @@ class FirestoreService {
   Future getUser(String uid) async {
     try {
       var userData = await _usersCollectionReference.document(uid).get();
+      print("Username is " + User.fromData(userData.data).username);
       return User.fromData(userData.data);
     } catch (e) {
       return e;

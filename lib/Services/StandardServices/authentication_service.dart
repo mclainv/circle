@@ -61,7 +61,7 @@ class AuthenticationService {
 
   Future _populateCurrentUser(FirebaseUser user) async {
     if (user != null) {
-      print(user.uid);
+      print("Populating with ${user.uid}");
       _currentUser = await _firestoreService.getUser(user.uid);
     }
   }

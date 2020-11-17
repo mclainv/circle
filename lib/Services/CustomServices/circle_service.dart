@@ -50,7 +50,7 @@ class CircleService {
             .where((mappedItem) => mappedItem.name != null)
             .toList();
 
-        // Add the posts onto the controller
+        // Add the circles onto the controller
         _circlesController.add(circles);
       }
     });

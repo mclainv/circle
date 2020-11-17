@@ -2,10 +2,10 @@ import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:flutter/material.dart';
 
 class FriendItem extends StatelessWidget {
-  final Friend friend;
+  @required final Friend friend;
   const FriendItem({
     Key key,
-    this.friend,
+    @required this.friend,
   }) : super(key: key);
 
   @override

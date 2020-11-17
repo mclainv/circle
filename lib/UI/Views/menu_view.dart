@@ -2,7 +2,7 @@ import 'package:circle_app_alpha/ViewModels/menu_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/UI/Views/menu_view.dart';
-import 'package:circle_app_alpha/UI/Widgets/dashboard.dart';
+import 'package:circle_app_alpha/UI/Views/HomeView/Dashboard/dashboard.dart';
 import 'package:circle_app_alpha/UI/Views/HomeView/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';

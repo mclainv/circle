@@ -23,20 +23,40 @@ class FriendsViewModel extends BaseModel {
 
   List<Friend> get friends => _friends;
 
+  List<Relationship> _relationships;
 
+  List<Relationship> get relationships => _relationships;
+
+
+  void listenToRelationships() {
+      setBusy(true);
+      String username = currentUser.getUsername();
+      _friendsService.listenToRelationshipsRealTime(username).listen((relationshipsData) {
+        print("Relationship stream");
+        List<Relationship> updatedRelationships = relationshipsData;
+        if (updatedRelationships != null && updatedRelationships.length > 0) {
+          _relationships = updatedRelationships;
+
+          notifyListeners();
+        }
+
+        setBusy(false);
+      });
+  }
   void listenToFriends() {
-    setBusy(true);
-    String username = currentUser.username;
-    _friendsService.listenToFriendsRealTime(username).listen((friendsData) {
-      List<Friend> updatedFriends = friendsData;
-      if (updatedFriends != null && updatedFriends.length > 0) {
-        _friends = updatedFriends;
+      setBusy(true);
+      String username = currentUser.getUsername();
+      print("almost listening");
+      _friendsService.listenToProfilesRealTime(relationships, username).listen((profilesData) {
+        print("now we are listening");
+        List<Friend> updatedFriends = profilesData;
+        if (updatedFriends != null && updatedFriends.length > 0) {
+          _friends = updatedFriends;
 
-        notifyListeners();
-      }
+          notifyListeners();
+        }
 
-
-      setBusy(false);
-    });
+        setBusy(false);
+      });
   }
 }

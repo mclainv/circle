@@ -1,16 +1,19 @@
 import 'package:circle_app_alpha/UI/Views/menu_view.dart';
-import 'package:circle_app_alpha/UI/Widgets/friend_item.dart';
+import 'package:circle_app_alpha/UI/Views/FriendsView/friend_item.dart';
 import 'package:circle_app_alpha/UI/Views/FriendsView/friends_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class FriendsView extends StatelessWidget {
-
   FriendsView({Key key}) : super(key: key);
   Widget build(BuildContext context) {
     return ViewModelBuilder<FriendsViewModel>.reactive(
       viewModelBuilder: () => FriendsViewModel(),
-      onModelReady: (model) => model.listenToFriends(),
+      onModelReady: (model) {
+        model.listenToRelationships();
+        model.listenToFriends();
+        print("this is after the call to listen to the friends stream in the friends view onModelReady");
+      },
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
 //        floatingActionButton: FloatingActionButton(
@@ -23,19 +26,18 @@ class FriendsView extends StatelessWidget {
         appBar: AppBar(
           title: Text("Arc Flow"),
         ),
-        body: new ListView.separated(
-          itemCount: 1,
-          itemBuilder: (BuildContext context, int index) {
-            if(model.friends != null) {
-              return FriendItem(friend: model.friends.elementAt(index));
-            }
-            else {
-              return Container();
-            }
-          },
-          separatorBuilder: (BuildContext context, int index) => const Divider(),
-        )
-      ),
-    );
+        body: model.friends != null && model.relationships != null
+                ? ListView.builder(
+              itemCount: model.friends.length,
+              itemBuilder: (context, index) =>
+                  FriendItem(friend: model.friends[index]),
+            )
+                : Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).primaryColor),
+              ),
+            )),
+      );
   }
 }

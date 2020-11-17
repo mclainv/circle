@@ -21,8 +21,6 @@ class Friend {
     };
   }
   static Friend fromMap(Map<String, dynamic> map, String documentId) {
-    if (map == null) return null;
-
     return Friend(
       name: map['name'],
       username: map['username'],
