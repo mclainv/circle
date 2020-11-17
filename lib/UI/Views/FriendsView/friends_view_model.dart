@@ -10,14 +10,19 @@ import 'package:circle_app_alpha/Services/StandardServices/navigation_service.da
 import 'package:circle_app_alpha/ViewModels/base_model.dart';
 import 'package:circle_app_alpha/Constants/route_names.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
+import 'package:stacked/stacked.dart';
 
-class FriendsViewModel extends BaseModel {
+class FriendsViewModel extends MultipleStreamViewModel {
   final AuthenticationService _authenticationService =
   locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
   final FriendService _friendsService = locator<FriendService>();
+  User get currentUser => _authenticationService.currentUser;
+
+  static const String _relationshipsKey = 'relationship-stream';
+  static const String _friendsKey = 'friend-stream';
 
   List<Friend> _friends;
 
@@ -27,6 +32,11 @@ class FriendsViewModel extends BaseModel {
 
   List<Relationship> get relationships => _relationships;
 
+  @override
+  Map<String, StreamData> get streamsMap => {
+    _relationshipsKey: StreamData<List<Relationship>>(_friendsService.listenToRelationshipsRealTime(currentUser.username)),
+    _friendsKey: StreamData<List<Friend>>(_friendsService.listenToProfilesRealTime(relationships, currentUser.username)),
+  };
 
   void listenToRelationships() {
       setBusy(true);

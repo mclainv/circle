@@ -3,13 +3,9 @@ import 'dart:async';
 import 'package:circle_app_alpha/Models/friend.dart';
 import 'package:circle_app_alpha/Models/relationship.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:circle_app_alpha/Models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:circle_app_alpha/Services/StandardServices/firestore_service.dart';
 import 'package:circle_app_alpha/Managers/locator.dart';
 import 'package:circle_app_alpha/Services/StandardServices/authentication_service.dart';
-import 'package:flutter/services.dart';
 
 class FriendService {
   final FirestoreService _firestoreService =
@@ -27,7 +23,6 @@ class FriendService {
 
   final StreamController<List<Friend>> _friendsController =
   StreamController<List<Friend>>.broadcast();
-
 
   Stream listenToRelationshipsRealTime(String username) {
     print("listen to relationships real time");
