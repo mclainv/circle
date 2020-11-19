@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:circle_app_alpha/Models/circle_invite.dart';
 import 'package:circle_app_alpha/Models/user.dart';
 import 'package:circle_app_alpha/Models/circle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,24 +22,6 @@ class CircleService {
       return e.toString();
     }
   }
-
-//  Future getCirclesOnceOff() async {
-//    try {
-//      var postDocumentSnapshot = await _circlesCollectionReference.getDocuments();
-//      if (postDocumentSnapshot.documents.isNotEmpty) {
-//        return postDocumentSnapshot.documents
-//            .map((snapshot) => Circle.fromMap(snapshot.data, snapshot.documentID))
-//            .where((mappedItem) => mappedItem.name != null)
-//            .toList();
-//      }
-//    } catch (e) {
-//      if (e is PlatformException) {
-//        return e.message;
-//      }
-//
-//      return e.toString();
-//    }
-//  }
 
   Stream listenToCirclesRealTime(String username) {
     _circlesCollectionReference.snapshots().listen((circlesSnapshot) {
@@ -85,6 +68,9 @@ class CircleService {
 
       return e.toString();
     }
+  }
+  Future inviteToCircle(CircleInvitation circleInvitation, String username) async {
+    
   }
 
 }
