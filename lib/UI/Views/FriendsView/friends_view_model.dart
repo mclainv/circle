@@ -34,7 +34,7 @@ class FriendsViewModel extends MultipleStreamViewModel {
 
   @override
   Map<String, StreamData> get streamsMap => {
-    _relationshipsKey: StreamData<List<Relationship>>(_friendsService.listenToRelationshipsRealTime(currentUser.username)),
+    _relationshipsKey: StreamData<List<Relationship>>(_friendsService.listenToRelationshipsDelayed(currentUser.username)),
     _friendsKey: StreamData<List<Friend>>(_friendsService.listenToProfilesRealTime(relationships, currentUser.username)),
   };
 

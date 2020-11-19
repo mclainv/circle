@@ -17,12 +17,31 @@ class FriendService {
   Firestore.instance.collection('relationships');
   final CollectionReference _profilesCollectionReference =
   Firestore.instance.collection('profiles');
-
+  var relationships;
   final StreamController<List<Relationship>> _relationshipsController =
   StreamController<List<Relationship>>.broadcast();
 
   final StreamController<List<Friend>> _friendsController =
   StreamController<List<Friend>>.broadcast();
+
+  Stream<List> listenToRelationshipsDelayed(String username) async* {
+    _relationshipsCollectionReference.snapshots().listen((
+        relationshipsSnapshot) {
+      if (relationshipsSnapshot.documents.isNotEmpty) {
+        relationships = relationshipsSnapshot.documents
+            .where((mappedItem) =>
+        mappedItem.data['hetaera'] == username ||
+            mappedItem.data['sappho'] ==
+                username) //Might be able to shorten this code piece
+            .map((snapshot) =>
+            Relationship.fromMap(snapshot.data, username, snapshot.documentID))
+            .toList();
+        // Add the relationships onto the controller
+      }
+    });
+    yield relationships;
+    await Future.delayed(Duration(seconds: 1));
+  }
 
   Stream listenToRelationshipsRealTime(String username) {
     print("listen to relationships real time");
