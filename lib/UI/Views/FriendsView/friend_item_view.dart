@@ -1,4 +1,5 @@
 import 'package:circle_app_alpha/Models/friend.dart';
+import 'package:circle_app_alpha/UI/Shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import '../menu_view.dart';
@@ -33,7 +34,7 @@ class FriendItemView extends StatelessWidget {
                       decoration: new BoxDecoration(
                           border: new Border(
                               right: new BorderSide(width: 1.0, color: Colors.white24))),
-                      child: Icon(Icons.autorenew, color: Colors.white),
+                      child: Icon(Icons.account_box, color: Colors.white),
                     ),
                     title: Text(
                       friend.name,
@@ -43,8 +44,8 @@ class FriendItemView extends StatelessWidget {
 
                     subtitle: Row(
                       children: <Widget>[
-                        Icon(Icons.person, color: Colors.pinkAccent),
-                        Text(friend.username, style: TextStyle(color: Colors.white))
+                        Icon(Icons.short_text, color: Colors.pinkAccent),
+                        Text(friend.username, style: TextStyle(color: Colors.white)),
                       ],
                     ),
                     trailing:
