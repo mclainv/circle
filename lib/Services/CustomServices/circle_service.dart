@@ -7,7 +7,9 @@ import 'package:flutter/services.dart';
 
 class CircleService {
   final CollectionReference _circlesCollectionReference =
-  Firestore.instance.collection('circles');
+      Firestore.instance.collection('circles');
+  final CollectionReference _circleInvitationsCollectionReference =
+      Firestore.instance.collection('circleInvitations');
 
   final StreamController<List<Circle>> _circlesController =
   StreamController<List<Circle>>.broadcast();
@@ -70,7 +72,13 @@ class CircleService {
     }
   }
   Future inviteToCircle(CircleInvitation circleInvitation, String username) async {
-    
+    try {
+      await _circleInvitationsCollectionReference.add(circleInvitation.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+      return e.toString();
+    }
   }
-
 }

@@ -4,6 +4,8 @@ import 'package:circle_app_alpha/UI/Views/FriendsView/friends_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import 'friend_item_view.dart';
+
 class FriendsView extends StatelessWidget {
   FriendsView({Key key}) : super(key: key);
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class FriendsView extends StatelessWidget {
                 ? ListView.builder(
               itemCount: model.friends.length,
               itemBuilder: (context, index) =>
-                  FriendItem(friend: model.friends[index]),
+                  FriendItemView(friend: model.friends[index]),
             )
                 : Center(
               child: CircularProgressIndicator(
