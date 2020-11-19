@@ -13,76 +13,26 @@ class FriendService {
   final AuthenticationService _authenticationService =
   locator<AuthenticationService>();
 
-  final CollectionReference _relationshipsCollectionReference =
-  Firestore.instance.collection('relationships');
   final CollectionReference _profilesCollectionReference =
   Firestore.instance.collection('profiles');
-  var relationships;
-  final StreamController<List<Relationship>> _relationshipsController =
-  StreamController<List<Relationship>>.broadcast();
 
   final StreamController<List<Friend>> _friendsController =
   StreamController<List<Friend>>.broadcast();
 
-  Stream<List> listenToRelationshipsDelayed(String username) async* {
-    _relationshipsCollectionReference.snapshots().listen((
-        relationshipsSnapshot) {
-      if (relationshipsSnapshot.documents.isNotEmpty) {
-        relationships = relationshipsSnapshot.documents
-            .where((mappedItem) =>
-        mappedItem.data['hetaera'] == username ||
-            mappedItem.data['sappho'] ==
-                username) //Might be able to shorten this code piece
-            .map((snapshot) =>
-            Relationship.fromMap(snapshot.data, username, snapshot.documentID))
+  Stream listenToProfilesRealTime(String username) {
+    print("listen to friend profiles real time");
+    _profilesCollectionReference.snapshots().listen((profilesSnapshot) {
+      if (profilesSnapshot.documents.isNotEmpty) {
+        var profiles = profilesSnapshot.documents
+            .where((mappedItem) => mappedItem.data['friends'].toString().contains(username))
+            .map((snapshot) => Friend.fromMap(snapshot.data, snapshot.documentID))
             .toList();
-        // Add the relationships onto the controller
-      }
-    });
-    yield relationships;
-    await Future.delayed(Duration(seconds: 1));
-  }
 
-  Stream listenToRelationshipsRealTime(String username) {
-    print("listen to relationships real time");
-    _relationshipsCollectionReference.snapshots().listen((relationshipsSnapshot) {
-      if (relationshipsSnapshot.documents.isNotEmpty) {
-        var relationships = relationshipsSnapshot.documents
-            .where((mappedItem) => mappedItem.data['hetaera'] == username ||
-                    mappedItem.data['sappho'] == username)//Might be able to shorten this code piece
-            .map((snapshot) => Relationship.fromMap(snapshot.data, username, snapshot.documentID))
-            .toList();
-        // Add the relationships onto the controller
-        _relationshipsController.add(relationships);
+        _friendsController.add(profiles);
       }
     });
 
-    return _relationshipsController.stream;
-  }
+    return _friendsController.stream;
 
-  Stream listenToProfilesRealTime(List<Relationship> relationships, String username) {
-    print("listen to friendships real time");
-    List<String> usernames = new List<String>();
-    if(relationships != null) {
-      for (int i = 0; i < relationships.length; i++) {
-        usernames.add(relationships[i].getHetaera());
-      }
-      _profilesCollectionReference.snapshots().listen((profilesSnapshot) {
-        if (profilesSnapshot.documents.isNotEmpty) {
-          var friends = profilesSnapshot.documents
-              .where((mappedItem) => usernames.contains(mappedItem["username"]))
-              .map((snapshot) =>
-              Friend.fromMap(snapshot.data, snapshot.documentID))
-              .toList();
-          //add the friends onto the controller
-          _friendsController.add(friends);
-          print(friends);
-        }
-      });
-    }
-    else {
-      print("Did not have relationships to pull profiles of");
-    }
-      return _friendsController.stream;
   }
 }

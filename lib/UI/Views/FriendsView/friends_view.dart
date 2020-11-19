@@ -10,10 +10,7 @@ class FriendsView extends StatelessWidget {
     return ViewModelBuilder<FriendsViewModel>.reactive(
       viewModelBuilder: () => FriendsViewModel(),
       onModelReady: (model) {
-        model.listenToRelationships();
-        if(model.relationships != null && model.relationships.length > 0)
         model.listenToFriends();
-        print("this is after the call to listen to the friends stream in the friends view onModelReady");
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
