@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,11 +30,14 @@ dependencies:
   dio: 2.0.22
   shared_preferences:
   google_sign_in:
-  fluttertoast:
   image_picker:
   cached_network_image:
   intl:
-  get_it: 3.1.0
+  stacked:
+  stacked_services:
+  provider:
+  get_it: ^4.0.2
+
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +57,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+    - assets/circle_components/
+    - assets/icons/
+    - assets/circle.jpg
     - assets/profilePictureDefault.png
   #  - images/a_dot_ham.jpeg
 
