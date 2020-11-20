@@ -25,7 +25,7 @@ class FriendItemView extends StatelessWidget {
           margin: new EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(64, 75, 96, .9)),
+                color: Color.fromRGBO(236, 152, 152, .9)),
               alignment: Alignment.center,
                 child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -34,7 +34,7 @@ class FriendItemView extends StatelessWidget {
                       decoration: new BoxDecoration(
                           border: new Border(
                               right: new BorderSide(width: 1.0, color: Colors.white24))),
-                      child: Icon(Icons.account_box, color: Colors.white),
+                      child: Icon(Icons.account_box, color: Color.fromRGBO(0, 48, 73, .9)),
                     ),
                     title: Text(
                       friend.name,
@@ -49,7 +49,10 @@ class FriendItemView extends StatelessWidget {
                       ],
                     ),
                     trailing:
-                    Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
+                    GestureDetector(
+                        onTap:
+                        child: Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
+                    ),
                 ),
             ),
           ),

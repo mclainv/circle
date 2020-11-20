@@ -1,5 +1,4 @@
 import 'package:circle_app_alpha/UI/Views/menu_view.dart';
-import 'package:circle_app_alpha/UI/Views/FriendsView/friend_item.dart';
 import 'package:circle_app_alpha/UI/Views/FriendsView/friends_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
